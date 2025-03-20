@@ -29,7 +29,7 @@ function App() {
       <header className="App-header">
         <img src={logo} className="App-logo" alt="logo" />
         <p>
- add-name-ysuraibi
+ add-name-ysuraibi - add-name-squidbool
           Chiristian Palmer, Yazan Alsuraibi, Ray Spencer.
 
         </p>
