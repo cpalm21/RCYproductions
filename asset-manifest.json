@@ -1,16 +1,16 @@
 {
   "files": {
     "main.css": "/RCYproductions/static/css/main.f855e6bc.css",
-    "main.js": "/RCYproductions/static/js/main.39b25801.js",
+    "main.js": "/RCYproductions/static/js/main.b195a4a6.js",
     "static/js/453.bad6c33a.chunk.js": "/RCYproductions/static/js/453.bad6c33a.chunk.js",
     "static/media/logo.svg": "/RCYproductions/static/media/logo.6ce24c58023cc2f8fd88fe9d219db6c6.svg",
     "index.html": "/RCYproductions/index.html",
     "main.f855e6bc.css.map": "/RCYproductions/static/css/main.f855e6bc.css.map",
-    "main.39b25801.js.map": "/RCYproductions/static/js/main.39b25801.js.map",
+    "main.b195a4a6.js.map": "/RCYproductions/static/js/main.b195a4a6.js.map",
     "453.bad6c33a.chunk.js.map": "/RCYproductions/static/js/453.bad6c33a.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.f855e6bc.css",
-    "static/js/main.39b25801.js"
+    "static/js/main.b195a4a6.js"
   ]
 }
