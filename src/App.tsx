@@ -29,7 +29,13 @@ function App() {
       <header className="App-header">
         <img src={logo} className="App-logo" alt="logo" />
         <p>
+<<<<<<< HEAD
           Chiristian Palmer, Yazan Alsuraibi, Ray Spencer.
+=======
+ add-name-ysuraibi
+          Chiristian Palmer, Yazan Alsuraibi, Ray Spencer...
+
+>>>>>>> origin/main
         </p>
         <a
           className="App-link"
