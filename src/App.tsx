@@ -3,6 +3,9 @@ import React, { useState } from 'react';
 import './App.css';
 import { Button, Form } from 'react-bootstrap';
 import { Homepage } from "./Homepage";
+import {DetailedQuizPage} from "./DetailedQuizPage"
+import {Routes, Route} from "react-router-dom"
+
 
 //local storage and API Key: key should be entered in by the user and will be stored in local storage (NOT session storage)
 let keyData = "";
@@ -27,6 +30,13 @@ function App() {
   }
   return (
     <div className="App">
+      <Routes>
+      <Route path = "/DetailedQuizPage" element={<DetailedQuizPage/>}/>
+      <Route 
+      path="/"
+      element={
+        <div>
+    
       <header className="App-header">
       <h1 className="App-title">Career Assessment Quiz</h1>
         {/*<img src={logo} className="App-logo" alt="logo" />*/}
@@ -44,14 +54,25 @@ function App() {
         </a>
         */}
       </header>
+      
       <Form>
         <Form.Label>API Key:</Form.Label>
         <Form.Control type="password" placeholder="Insert API Key Here" onChange={changeKey}></Form.Control>
         <br></br>
         <Button className="Submit-Button" onClick={handleSubmit}>Submit</Button>
       </Form>
-    </div>
+        </div>
+
+       }
+       />
+       </Routes>
+       </div>
+
+
+
+
   );
 }
+
 
 export default App;
