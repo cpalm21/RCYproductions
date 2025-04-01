@@ -1,6 +1,4 @@
 import { Button } from "react-bootstrap";
-import DetailedQuizPage from "./DetailedQuizPage"
-import {Routes, Route} from "react-router-dom"
 import {useNavigate} from "react-router-dom"
 
 
