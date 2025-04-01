@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
-import logo from './logo.svg';
+//import logo from './logo.svg';
 import './App.css';
 import { Button, Form } from 'react-bootstrap';
+import { Homepage } from "./Homepage";
 
 //local storage and API Key: key should be entered in by the user and will be stored in local storage (NOT session storage)
 let keyData = "";
@@ -27,13 +28,13 @@ function App() {
   return (
     <div className="App">
       <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-
-          Chiristian Palmer, Yazan Alsuraibi, Ray Spencer. Last one
-
-        </p>
-        <a
+      <h1 className="App-title">Career Assessment Quiz</h1>
+        {/*<img src={logo} className="App-logo" alt="logo" />*/}
+        <hr></hr>
+        
+            <Homepage></Homepage>
+            <hr></hr>
+       {/*} <a
           className="App-link"
           href="https://reactjs.org"
           target="_blank"
@@ -41,6 +42,7 @@ function App() {
         >
           Learn React
         </a>
+        */}
       </header>
       <Form>
         <Form.Label>API Key:</Form.Label>
