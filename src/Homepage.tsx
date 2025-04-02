@@ -10,6 +10,10 @@ export function Homepage(): React.JSX.Element {
     navigate('/DetailedQuizPage')
   }
 
+  const goToBasic = () => {
+    navigate('/BasicQuizPage')
+  }
+
 
   return (
 
@@ -19,7 +23,7 @@ export function Homepage(): React.JSX.Element {
 <Button onClick={goToDetailed} size="lg" style={{ marginRight: "400px", padding: "120px 24px" }}>
   Detailed Quiz
 </Button>
-<Button size="lg" style={{ padding: "120px 45px" }}>
+<Button onClick={goToBasic} size="lg" style={{ padding: "120px 45px" }}>
   Basic Quiz
 </Button>
 </span>
