@@ -22,11 +22,12 @@ export function BasicQuizPage(): React.JSX.Element {
 
     return (
         <div>
-            
-            <button onClick={goToHome}>Go Home</button>
-            <button onClick={goToDetailed}>Switch to Detailed</button>
-            <div>This is the basic Quiz</div>
-        
+          <header style={{backgroundColor: '#282c34', color: "white", minHeight: "100vh"}}>
+            <button onClick={goToHome}>Return Home</button>
+            <button onClick={goToDetailed}>Switch to Detailed Quiz</button>
+            <h3>This is the Basic Quiz</h3>
+            <p>The Basic Quiz is a short assessmment, designed to give users a broad array of career recommendations. This is ideal for users who are curious but aren't seeking for specific career recommendations.</p>
+          </header>
         </div>
     );
 }
