@@ -1,6 +1,6 @@
 import React from 'react';
 import "./Homepage"
-import {DetailedQuizPage} from "./DetailedQuizPage"
+import "./DetailedQuizPage"
 import { useNavigate } from 'react-router-dom';
 
 
