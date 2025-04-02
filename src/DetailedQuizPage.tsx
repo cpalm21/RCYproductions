@@ -24,7 +24,7 @@ export function DetailedQuizPage(): React.JSX.Element {
             <button onClick={goToHome}>Return Home</button>
             <button onClick={goToBasic}>Switch to Basic Quiz</button>
             <h3>This is the Detailed Quiz</h3>
-            <p>The Detailed Quiz is a longer assessment, designed to help users to focus in on specific career recommendations. This is ideal for users who are making serious considerations anout their future career</p>
+            <p>The Detailed Quiz is a longer assessment, designed to help users to focus in on specific career recommendations. This is ideal for users who are making serious considerations about their future career</p>
           </header>
                     
         </div>
