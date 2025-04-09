@@ -3,6 +3,43 @@ import { Button, Form } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 import './BasicQuizPage.css'; // Import the CSS file
 
+
+
+interface positionProps{
+  setPosition: (newPosition: number) => void;
+  position: number;
+}
+
+//Code for the progress bar 
+function MoveableBox({ position }: positionProps): React.JSX.Element {
+  return (
+      <div 
+          
+          data-testid="moveable-box-container"
+          
+          style={{
+              width: "400px", // This is the full width of the progress bar (the left side will stay fixed at 0px)
+              height: "10px",
+              backgroundColor: "lightgray", // Background color for the unfilled part of the bar
+              border: "1px solid blue",
+              display: "inline-block",
+              verticalAlign: "bottom",
+              
+          }}
+      >
+          <div
+              data-testid="moveable-box"
+              style={{
+                  width: position + "px", // This will only control the right side
+                  height: "100%", // Full height of the progress bar
+                  backgroundColor: "lightblue", // Color for the filled part of the progress bar
+              }}
+          ></div>
+      </div>
+  );
+}
+
+
 export function BasicQuizPage(): React.JSX.Element {
   const navigate = useNavigate();
 
@@ -18,6 +55,13 @@ export function BasicQuizPage(): React.JSX.Element {
   const [question1Answer, setQuestion1Answer] = useState<number | null>(null);
   const [question2Answer, setQuestion2Answer] = useState<number | null>(null);
   const [question3Answer, setQuestion3Answer] = useState<number | null>(null);
+
+  //status bar 
+  const [position, setPosition] = useState<number>(0);
+  const [questionAnswered, setQuestionAnswered] = useState<boolean>(false)
+  const [question2Answered, setQuestion2Answered] = useState<boolean>(false)
+  const [question3Answered, setQuestion3Answered] = useState<boolean>(false)
+
   // Add more states for additional questions as needed
 
   // Store the current question index
@@ -25,11 +69,43 @@ export function BasicQuizPage(): React.JSX.Element {
 
   const handleAnswerChange = (index: number) => {
     if (currentQuestionIndex === 0) {
-      setQuestion1Answer(index);
+        setQuestion1Answer(index);
+        //updates progress bar 
+        if(!questionAnswered){
+          if(position < 267){
+            setPosition(133+position);
+          }
+        }
+    
+    
+    
+        setQuestionAnswered(true);
+
     } else if (currentQuestionIndex === 1) {
       setQuestion2Answer(index);
+      //updates progress bar 
+      if(!question2Answered){
+        if(position < 267){
+          setPosition(133+position);
+        }
+      }
+  
+  
+  
+      setQuestion2Answered(true);
+      
     } else if (currentQuestionIndex === 2) {
       setQuestion3Answer(index);
+      //updates progress bar 
+      if(!question3Answered){
+        if(position < 267){
+          setPosition(133+position);
+        }
+      }
+  
+  
+  
+      setQuestion3Answered(true);
     }
     // You can add additional conditions for more questions here
   };
@@ -119,10 +195,21 @@ export function BasicQuizPage(): React.JSX.Element {
           ) : (
             <Button disabled>Quiz Complete</Button>
           )}
+          
+        </div>
+        <div>
+          Progress Bar   
+        <MoveableBox
+              position={position}
+              setPosition={setPosition}
+          ></MoveableBox>
         </div>
       </div>
     </div>
   );
 }
+
+
+
 
 export default BasicQuizPage;
