@@ -1,0 +1,48 @@
+/* Basic styles for header and layout */
+.header {
+    background-color: #282c34;
+    color: white;
+    min-height: 10vh;
+    padding: 20px;
+  }
+  
+  .title, .description {
+    margin-left: 10px;
+  }
+  
+  /* Quiz container */
+  .quiz-container {
+    padding: 20px;
+    background-color: #f4f4f4;
+    margin: 20px 0;
+  }
+  
+  .question-label, .answers-label {
+    margin-left: 10px;
+  }
+  
+  .question-input {
+    margin-bottom: 10px;
+    margin-left: 10px;
+    width: 100%;
+  }
+  
+  /* Align radio button and answer label */
+  .answer-option {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+  }
+  
+  .answer-radio {
+    margin-left: 10px;
+    margin-right: 10px;
+  }
+  
+  .navigation {
+    margin-top: 20px;
+    margin-left: 470px;
+    display: flex;
+    gap: 20px
+  }
+  
