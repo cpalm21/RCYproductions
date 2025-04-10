@@ -19,35 +19,49 @@ export function BasicQuizPage(): React.JSX.Element {
   const [question2Answer, setQuestion2Answer] = useState<number | null>(null);
   const [question3Answer, setQuestion3Answer] = useState<number | null>(null);
 
+  // Progress state
+  const [position, setPosition] = useState<number>(0);
+  const [questionAnswered, setQuestionAnswered] = useState<boolean>(false);
+  const [question2Answered, setQuestion2Answered] = useState<boolean>(false);
+  const [question3Answered, setQuestion3Answered] = useState<boolean>(false);
+
+  // Question index
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
-  const [position, setPosition] = useState<number>(0); // Only declare position once
 
   const handleAnswerChange = (index: number) => {
     if (currentQuestionIndex === 0) {
-      if (question1Answer === null) setPosition(position + 133); // Update position only once
       setQuestion1Answer(index);
+      if (!questionAnswered) {
+        setPosition(position + 133);
+        setQuestionAnswered(true);
+      }
     } else if (currentQuestionIndex === 1) {
-      if (question2Answer === null) setPosition(position + 133);
       setQuestion2Answer(index);
+      if (!question2Answered) {
+        setPosition(position + 133);
+        setQuestion2Answered(true);
+      }
     } else if (currentQuestionIndex === 2) {
-      if (question3Answer === null) setPosition(position + 133);
       setQuestion3Answer(index);
+      if (!question3Answered) {
+        setPosition(position + 133);
+        setQuestion3Answered(true);
+      }
     }
   };
 
   const nextQuestion = () => {
     if (currentQuestionIndex < 2) {
-      setCurrentQuestionIndex(currentQuestionIndex + 1); // Adjust for more questions
+      setCurrentQuestionIndex(currentQuestionIndex + 1);
     }
   };
 
   const prevQuestion = () => {
     if (currentQuestionIndex > 0) {
-      setCurrentQuestionIndex(currentQuestionIndex - 1); // Adjust for more questions
+      setCurrentQuestionIndex(currentQuestionIndex - 1);
     }
   };
 
-  // Function to get the current question and answers
   const getCurrentQuestionData = () => {
     switch (currentQuestionIndex) {
       case 0:
@@ -105,47 +119,18 @@ export function BasicQuizPage(): React.JSX.Element {
         />
 
         <h4 className="answers-label">Answers:</h4>
-        {/* Rendering answers individually without map */}
-        <div className="answer-option">
-          <Form.Check
-            type="radio"
-            name="answer"
-            label={answers[0]}
-            checked={selectedAnswer === 0}
-            onChange={() => handleAnswerChange(0)}
-            className="answer-radio"
-          />
-        </div>
-        <div className="answer-option">
-          <Form.Check
-            type="radio"
-            name="answer"
-            label={answers[1]}
-            checked={selectedAnswer === 1}
-            onChange={() => handleAnswerChange(1)}
-            className="answer-radio"
-          />
-        </div>
-        <div className="answer-option">
-          <Form.Check
-            type="radio"
-            name="answer"
-            label={answers[2]}
-            checked={selectedAnswer === 2}
-            onChange={() => handleAnswerChange(2)}
-            className="answer-radio"
-          />
-        </div>
-        <div className="answer-option">
-          <Form.Check
-            type="radio"
-            name="answer"
-            label={answers[3]}
-            checked={selectedAnswer === 3}
-            onChange={() => handleAnswerChange(3)}
-            className="answer-radio"
-          />
-        </div>
+        {answers.map((answer, index) => (
+          <div key={index} className="answer-option">
+            <Form.Check
+              type="radio"
+              name="answer"
+              label={answer}
+              checked={selectedAnswer === index}
+              onChange={() => handleAnswerChange(index)}
+              className="answer-radio"
+            />
+          </div>
+        ))}
 
         <div className="navigation">
           <Button onClick={prevQuestion} disabled={currentQuestionIndex === 0}>
@@ -165,7 +150,6 @@ export function BasicQuizPage(): React.JSX.Element {
             <div className="moveable-box" style={{ width: `${position}px` }}></div>
           </div>
         </div>
-
       </div>
     </div>
   );
