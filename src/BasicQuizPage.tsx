@@ -20,11 +20,11 @@ export function BasicQuizPage(): React.JSX.Element {
   const [question3Answer, setQuestion3Answer] = useState<number | null>(null);
 
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
-  const [position, setPosition] = useState<number>(0);
+  const [position, setPosition] = useState<number>(0); // Only declare position once
 
   const handleAnswerChange = (index: number) => {
     if (currentQuestionIndex === 0) {
-      if (question1Answer === null) setPosition(position + 133);
+      if (question1Answer === null) setPosition(position + 133); // Update position only once
       setQuestion1Answer(index);
     } else if (currentQuestionIndex === 1) {
       if (question2Answer === null) setPosition(position + 133);
@@ -37,16 +37,17 @@ export function BasicQuizPage(): React.JSX.Element {
 
   const nextQuestion = () => {
     if (currentQuestionIndex < 2) {
-      setCurrentQuestionIndex(currentQuestionIndex + 1);
+      setCurrentQuestionIndex(currentQuestionIndex + 1); // Adjust for more questions
     }
   };
 
   const prevQuestion = () => {
     if (currentQuestionIndex > 0) {
-      setCurrentQuestionIndex(currentQuestionIndex - 1);
+      setCurrentQuestionIndex(currentQuestionIndex - 1); // Adjust for more questions
     }
   };
 
+  // Function to get the current question and answers
   const getCurrentQuestionData = () => {
     switch (currentQuestionIndex) {
       case 0:
@@ -104,18 +105,47 @@ export function BasicQuizPage(): React.JSX.Element {
         />
 
         <h4 className="answers-label">Answers:</h4>
-        {answers.map((answer, index) => (
-          <div key={index} className="answer-option">
-            <Form.Check
-              type="radio"
-              name="answer"
-              label={answer}
-              checked={selectedAnswer === index}
-              onChange={() => handleAnswerChange(index)}
-              className="answer-radio"
-            />
-          </div>
-        ))}
+        {/* Rendering answers individually without map */}
+        <div className="answer-option">
+          <Form.Check
+            type="radio"
+            name="answer"
+            label={answers[0]}
+            checked={selectedAnswer === 0}
+            onChange={() => handleAnswerChange(0)}
+            className="answer-radio"
+          />
+        </div>
+        <div className="answer-option">
+          <Form.Check
+            type="radio"
+            name="answer"
+            label={answers[1]}
+            checked={selectedAnswer === 1}
+            onChange={() => handleAnswerChange(1)}
+            className="answer-radio"
+          />
+        </div>
+        <div className="answer-option">
+          <Form.Check
+            type="radio"
+            name="answer"
+            label={answers[2]}
+            checked={selectedAnswer === 2}
+            onChange={() => handleAnswerChange(2)}
+            className="answer-radio"
+          />
+        </div>
+        <div className="answer-option">
+          <Form.Check
+            type="radio"
+            name="answer"
+            label={answers[3]}
+            checked={selectedAnswer === 3}
+            onChange={() => handleAnswerChange(3)}
+            className="answer-radio"
+          />
+        </div>
 
         <div className="navigation">
           <Button onClick={prevQuestion} disabled={currentQuestionIndex === 0}>
@@ -130,11 +160,11 @@ export function BasicQuizPage(): React.JSX.Element {
 
         {/* Progress Bar */}
         <div className="progress-row">
-  <span className="progress-label">Progress:</span>
-  <div className="moveable-box-container">
-    <div className="moveable-box" style={{ width: `${position}px` }}></div>
-  </div>
-</div>
+          <span className="progress-label">Progress:</span>
+          <div className="moveable-box-container">
+            <div className="moveable-box" style={{ width: `${position}px` }}></div>
+          </div>
+        </div>
 
       </div>
     </div>
