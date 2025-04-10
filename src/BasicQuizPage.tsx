@@ -19,19 +19,34 @@ export function BasicQuizPage(): React.JSX.Element {
   const [question2Answer, setQuestion2Answer] = useState<number | null>(null);
   const [question3Answer, setQuestion3Answer] = useState<number | null>(null);
 
-  const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
+  // Progress state
   const [position, setPosition] = useState<number>(0);
+  const [questionAnswered, setQuestionAnswered] = useState<boolean>(false);
+  const [question2Answered, setQuestion2Answered] = useState<boolean>(false);
+  const [question3Answered, setQuestion3Answered] = useState<boolean>(false);
+
+  // Question index
+  const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
 
   const handleAnswerChange = (index: number) => {
     if (currentQuestionIndex === 0) {
-      if (question1Answer === null) setPosition(position + 133);
       setQuestion1Answer(index);
+      if (!questionAnswered) {
+        setPosition(position + 133);
+        setQuestionAnswered(true);
+      }
     } else if (currentQuestionIndex === 1) {
-      if (question2Answer === null) setPosition(position + 133);
       setQuestion2Answer(index);
+      if (!question2Answered) {
+        setPosition(position + 133);
+        setQuestion2Answered(true);
+      }
     } else if (currentQuestionIndex === 2) {
-      if (question3Answer === null) setPosition(position + 133);
       setQuestion3Answer(index);
+      if (!question3Answered) {
+        setPosition(position + 133);
+        setQuestion3Answered(true);
+      }
     }
   };
 
@@ -130,12 +145,11 @@ export function BasicQuizPage(): React.JSX.Element {
 
         {/* Progress Bar */}
         <div className="progress-row">
-  <span className="progress-label">Progress:</span>
-  <div className="moveable-box-container">
-    <div className="moveable-box" style={{ width: `${position}px` }}></div>
-  </div>
-</div>
-
+          <span className="progress-label">Progress:</span>
+          <div className="moveable-box-container">
+            <div className="moveable-box" style={{ width: `${position}px` }}></div>
+          </div>
+        </div>
       </div>
     </div>
   );
