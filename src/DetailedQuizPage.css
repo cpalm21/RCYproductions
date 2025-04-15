@@ -1,0 +1,15 @@
+.answer-options {
+    margin-bottom: 20px;
+    display: flex;
+    flex-direction: column; /* Arrange options vertically */
+    align-items: flex-start; /* Align the radio buttons to the left */
+  }
+  
+  .answer-radio {
+    margin: 10px 0;
+  }
+  
+  .answer-input {
+    width: 100%;
+    text-align: left; /* Ensure the text in the input field is aligned to the left */
+  }
