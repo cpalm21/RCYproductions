@@ -147,7 +147,7 @@ export function BasicQuizPage(): React.JSX.Element {
         <div className="progress-row">
           <span className="progress-label">Progress:</span>
           <div className="moveable-box-container">
-            <div className="moveable-box" style={{ width: `${position}px` }}></div>
+            <div className="moveable-box" style={{ width:  position + "px"}}></div>
           </div>
         </div>
       </div>

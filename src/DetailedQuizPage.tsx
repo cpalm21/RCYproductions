@@ -25,6 +25,10 @@ export function DetailedQuizPage(): React.JSX.Element {
 
   // Progress state
   const [position, setPosition] = useState<number>(0);
+  
+  const [questionAnswered, setQuestionAnswered] = useState<boolean>(false);
+  const [question2Answered, setQuestion2Answered] = useState<boolean>(false);
+  const [question3Answered, setQuestion3Answered] = useState<boolean>(false);
 
   // Question index
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
@@ -32,17 +36,32 @@ export function DetailedQuizPage(): React.JSX.Element {
   const handleAnswerChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (currentQuestionIndex === 0) {
       setQuestion1Answer(Number(e.target.value)); // For multiple-choice question
+      //update the progress bar 
+      if (!questionAnswered) {
+        setPosition(position + 133);
+        setQuestionAnswered(true);
+      }
     } else if (currentQuestionIndex === 1) {
       setQuestion2Answer(e.target.value); // Open-ended question
+      //update the progress bar
+      if (!question2Answered) {
+        setPosition(position + 133);
+        setQuestion2Answered(true);
+      }
     } else if (currentQuestionIndex === 2) {
       setQuestion3Answer(e.target.value); // Open-ended question
+      //update the progress bar 
+      if (!question3Answered) {
+        setPosition(position + 133);
+        setQuestion3Answered(true);
+      }
     }
   };
 
   const nextQuestion = () => {
     if (currentQuestionIndex < 2) {
       setCurrentQuestionIndex(currentQuestionIndex + 1);
-      setPosition(position + 133);  // Update the position for progress bar
+        // Update the position for progress bar
     }
   };
 
