@@ -4,21 +4,35 @@ import './Homepage.css'
 import { useState } from "react";
 
 
+
+
 export function Homepage(): React.JSX.Element {
-  
+ 
+//<img id="image" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRAelxWhvC_4OPKqCB_LMflgJhSyebR9xUGNQ&amp;s" />
+
+
+
+
+//<h1 className="App-title">Career Assessment Quiz</h1>
+
+
   const [aboutDetailed, setaboutDetailed] = useState<boolean>(false);
   const [aboutBasic, setaboutBasic] = useState<boolean>(false);
-  
+ 
+
 
   const navigate = useNavigate();
+
 
   const goToDetailed = () => {
     navigate('/DetailedQuizPage')
   }
 
+
   const goToBasic = () => {
     navigate('/BasicQuizPage')
   }
+
 
   function isAboutDetailed(): void{
     if(!aboutDetailed){
@@ -29,7 +43,10 @@ export function Homepage(): React.JSX.Element {
     }    
 
 
+
+
   }
+
 
   function isAboutBasic(): void{
     if(!aboutBasic){
@@ -40,14 +57,35 @@ export function Homepage(): React.JSX.Element {
     }    
 
 
+
+
   }
+
+
 
 
   return (
 
 
+
+
    
 <div>
+<div className="header-container">
+<h1 className="header">
+  Find your Future Career
+</h1>
+
+
+<div>
+<img id="image" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRujTSOWwqSxOgxcTfAmkHjN7BHYF3H70eYcFgyW3bGrU7dhYL-eR0uC91UZFOH353WTfI&usqp=CAU" />
+
+
+</div>
+</div>
+
+
+
 
 <Button onClick={goToDetailed} size="lg" style={{ marginRight: "400px", padding: "120px 24px" }}>
   Detailed Quiz
@@ -68,6 +106,12 @@ export function Homepage(): React.JSX.Element {
 </div>
 
 
+
+
+
+
 </div>
   );
 }
+
+

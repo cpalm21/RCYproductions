@@ -1,3 +1,22 @@
+.header{
+  position: absolute;
+  margin-top:-475px;
+  align-self: center;
+}
+
+
+
+
+.header-container{
+
+
+  display: flex;
+  justify-content: center;  /* Centers horizontally */
+  align-items: center;      /* Centers vertically */
+ 
+
+
+}
 
 
 .bothAbout {
@@ -5,9 +24,9 @@
     justify-content: space-between; /* center horizontally */
     gap: 40px; /* adds space between the two buttons */
     margin-top: 30px; /* space above the about buttons */
-    
+   
   }
-  
+ 
   .aboutDetailed,
 .aboutBasic {
   position: relative; /* makes child absolute positions relative to these */
@@ -17,32 +36,45 @@
 }
 
 
+
+
   .detailedDescription {
     position: absolute;
     top: 60px; /* appears right below the button */
     left: 0;
     width: 200px;
-    background-color: #0f0e0e;
-    color: white;
+    background-color: #d6e4f0;
+    color: #282c34;
     padding: 10px;
     border: 1px solid #0f0e0e;
     border-radius: 8px;
     z-index: 10;
     font-size: 15px;
   }
-  
+ 
   .basicDescription {
     position: absolute;
     top: 60px;
     right: 0; /* Pulls it back inside the container */
     width: 200px;
-    background-color: #0f0e0e;
-    color: white;
+    background-color: #d6e4f0;
+    color: #282c34;
     padding: 10px;
     border: 1px solid #0f0e0e;
     border-radius: 8px;
     z-index: 10;
     font-size: 15px;
+  }
+
+
+
+
+
+
+  #image{
+    margin-top: -170px; /* move image up */
+    width: 350px;       /* resize image width */
+    height: auto;    
   }
 
 
