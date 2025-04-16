@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import { Button, Form } from 'react-bootstrap';
 import './DetailedQuizPage.css'; // Import the CSS file
 
+
 export function DetailedQuizPage(): React.JSX.Element {
 
   const navigate = useNavigate();
@@ -16,6 +17,7 @@ export function DetailedQuizPage(): React.JSX.Element {
   const goToBasic = () => {
     navigate('/BasicQuizPage');
   };
+
 
   // State for answers (Only 7 open-ended questions)
   const [question2Answer, setQuestion2Answer] = useState<string>(''); // Open-ended
@@ -38,11 +40,13 @@ export function DetailedQuizPage(): React.JSX.Element {
   const [question7Answered, setQuestion7Answered] = useState<boolean>(false);
   const [question8Answered, setQuestion8Answered] = useState<boolean>(false);
 
+
   // Question index
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
 
   const handleAnswerChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (currentQuestionIndex === 0) {
+
       setQuestion2Answer(e.target.value); // Open-ended question
       if (!question2Answered) {
         setPosition(position + 57);
@@ -84,12 +88,15 @@ export function DetailedQuizPage(): React.JSX.Element {
         setPosition(position + 57);
         setQuestion8Answered(true);
       }
+
     }
   };
 
   const nextQuestion = () => {
+
     if (currentQuestionIndex < 7) {
       setCurrentQuestionIndex(currentQuestionIndex + 1);
+
     }
   };
 
@@ -103,6 +110,7 @@ export function DetailedQuizPage(): React.JSX.Element {
     switch (currentQuestionIndex) {
       case 0:
         return {
+
           question: "Are there any specific characteristics or aspects a potential career must avoid for you to consider pursuing it?",
           answer: question2Answer,
           type: "open-ended"
@@ -111,10 +119,12 @@ export function DetailedQuizPage(): React.JSX.Element {
         return {
           question: "What skills or qualities do you believe you have acquired? How would you apply it to your future career?",
           answer: question3Answer,
+
           type: "open-ended"
         };
       case 2:
         return {
+
           question: "What type of impact do you want to have through your work?",
           answer: question4Answer,
           type: "open-ended"
@@ -149,6 +159,7 @@ export function DetailedQuizPage(): React.JSX.Element {
   };
 
   const { question, answer, type } = getCurrentQuestionData();
+
 
   return (
     <div>
@@ -186,13 +197,17 @@ export function DetailedQuizPage(): React.JSX.Element {
             onChange={handleAnswerChange}
             className="answer-input"
           />
+
         ) : null}
+
 
         <div className="navigation">
           <Button onClick={prevQuestion} disabled={currentQuestionIndex === 0}>
             Previous Question
           </Button>
+
           {currentQuestionIndex < 6 ? (
+
             <Button onClick={nextQuestion}>Next Question</Button>
           ) : (
             <Button disabled>Quiz Complete</Button>
