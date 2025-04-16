@@ -78,7 +78,7 @@ export function Homepage(): React.JSX.Element {
 
 
 <div>
-<img id="image" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRujTSOWwqSxOgxcTfAmkHjN7BHYF3H70eYcFgyW3bGrU7dhYL-eR0uC91UZFOH353WTfI&usqp=CAU" />
+<img id="image" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRujTSOWwqSxOgxcTfAmkHjN7BHYF3H70eYcFgyW3bGrU7dhYL-eR0uC91UZFOH353WTfI&usqp=CAU" alt="people doing different careers" />
 
 
 </div>
