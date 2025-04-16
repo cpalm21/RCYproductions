@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Button, Form } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
-import './BasicQuizPage.css'; // Import the CSS file
+import './BasicQuizPage.css';
 
 export function BasicQuizPage(): React.JSX.Element {
   const navigate = useNavigate();
@@ -18,7 +18,6 @@ export function BasicQuizPage(): React.JSX.Element {
   const [question1Answer, setQuestion1Answer] = useState<number | null>(null);
   const [question2Answer, setQuestion2Answer] = useState<number | null>(null);
   const [question3Answer, setQuestion3Answer] = useState<number | null>(null);
-
   const [question4Answer, setQuestion4Answer] = useState<number | null>(null);
   const [question5Answer, setQuestion5Answer] = useState<number | null>(null);
   const [question6Answer, setQuestion6Answer] = useState<number | null>(null);
@@ -31,7 +30,7 @@ export function BasicQuizPage(): React.JSX.Element {
   const [position, setPosition] = useState<number>(0);
 
   // Progress tracking for each question
-  const [questionAnswered, setQuestionAnswered] = useState<boolean>(false);
+  const [question1Answered, setQuestion1Answered] = useState<boolean>(false);
   const [question2Answered, setQuestion2Answered] = useState<boolean>(false);
   const [question3Answered, setQuestion3Answered] = useState<boolean>(false);
   const [question4Answered, setQuestion4Answered] = useState<boolean>(false);
@@ -45,73 +44,91 @@ export function BasicQuizPage(): React.JSX.Element {
   // Question index
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
 
+    // Flag for whether to display finished notification
+    const [notify, setNotify] = useState<boolean>(false);
+
+  const notifyIfDone = () => {
+    if(question1Answered &&
+      question2Answered &&
+      question3Answered &&
+      question4Answered &&
+      question5Answered &&
+      question6Answered &&
+      question7Answered && 
+      question8Answered && 
+      question9Answered && 
+      question10Answered) {
+        setNotify(true);
+    } else {
+      setNotify(false);
+    }
+  }
+
   const handleAnswerChange = (index: number) => {
     if (currentQuestionIndex === 0) {
       setQuestion1Answer(index);
-      if (!questionAnswered) {
-
-        setPosition(position + 39.9);
-
-        setQuestionAnswered(true);
+      if (!question1Answered) {
+        setPosition(position + 40);
+        setQuestion1Answered(true);
       }
     } else if (currentQuestionIndex === 1) {
       setQuestion2Answer(index);
       if (!question2Answered) {
-
-        setPosition(position + 39.9);
-
+        setPosition(position + 40);
         setQuestion2Answered(true);
       }
     } else if (currentQuestionIndex === 2) {
       setQuestion3Answer(index);
       if (!question3Answered) {
-        setPosition(position + 39.9);
+        setPosition(position + 40);
         setQuestion3Answered(true);
       }
     } else if (currentQuestionIndex === 3) {
       setQuestion4Answer(index);
       if (!question4Answered) {
-        setPosition(position + 39.9);
+        setPosition(position + 40);
         setQuestion4Answered(true);
       }
     } else if (currentQuestionIndex === 4) {
       setQuestion5Answer(index);
       if (!question5Answered) {
-        setPosition(position + 39.9);
+        setPosition(position + 40);
         setQuestion5Answered(true);
       }
     } else if (currentQuestionIndex === 5) {
       setQuestion6Answer(index);
       if (!question6Answered) {
-        setPosition(position + 39.9);
+        setPosition(position + 40);
         setQuestion6Answered(true);
       }
     } else if (currentQuestionIndex === 6) {
       setQuestion7Answer(index);
       if (!question7Answered) {
-        setPosition(position + 39.9);
+        setPosition(position + 40);
         setQuestion7Answered(true);
       }
     } else if (currentQuestionIndex === 7) {
       setQuestion8Answer(index);
       if (!question8Answered) {
-        setPosition(position + 39.9);
+        setPosition(position + 40);
         setQuestion8Answered(true);
       }
     } else if (currentQuestionIndex === 8) {
       setQuestion9Answer(index);
       if (!question9Answered) {
-        setPosition(position + 39.9);
+        setPosition(position + 40);
         setQuestion9Answered(true);
       }
     } else if (currentQuestionIndex === 9) {
       setQuestion10Answer(index);
       if (!question10Answered) {
-        setPosition(position + 39.9);
+        setPosition(position + 40);
         setQuestion10Answered(true);
-
       }
     }
+
+    notifyIfDone();
+
   };
 
   const nextQuestion = () => {
@@ -288,6 +305,8 @@ export function BasicQuizPage(): React.JSX.Element {
           </div>
         ))}
 
+        {notify && <Form.Label>You've completed all the questions for the Basic Assessment! ✔️</Form.Label>}
+
         <div className="navigation">
           <Button onClick={prevQuestion} disabled={currentQuestionIndex === 0}>
             Previous Question
@@ -312,5 +331,3 @@ export function BasicQuizPage(): React.JSX.Element {
     </div>
   );
 }
-
-export default BasicQuizPage;
