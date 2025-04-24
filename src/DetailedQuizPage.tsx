@@ -1,9 +1,12 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import "./Homepage";
 import "./BasicQuizPage";
 import { useNavigate } from 'react-router-dom';
 import { Button, Form } from 'react-bootstrap';
 import './DetailedQuizPage.css';
+
+import axios from 'axios';
+
 
 
 export function DetailedQuizPage(): React.JSX.Element {
@@ -18,6 +21,9 @@ export function DetailedQuizPage(): React.JSX.Element {
     navigate('/BasicQuizPage');
   };
 
+  //state for chat gpt 
+  const [careerRecommendation, setCareerRecommendation] = useState<string | null>(null);
+  const [loadingRecommendation, setLoadingRecommendation] = useState<boolean>(false);
 
   // State for answers
   const [question1Answer, setQuestion1Answer] = useState<string>('');
@@ -60,6 +66,57 @@ export function DetailedQuizPage(): React.JSX.Element {
       setNotify(false);
     }
   }
+
+
+  //function for ChatGPT
+  const getCareerRecommendation = async () => {
+    setLoadingRecommendation(true);
+  
+    const prompt = `
+  Based on the following responses from a career survey, suggest a career path that aligns with the user's values, preferences, and passions.
+  
+  1. ${question1Answer}
+  2. ${question2Answer}
+  3. ${question3Answer}
+  4. ${question4Answer}
+  5. ${question5Answer}
+  6. ${question6Answer}
+  7. ${question7Answer}
+  
+  Provide the recommendation in 2-3 sentences.
+  Also, at the end of the response, can you say "have a nice day!"
+  `;
+  
+    try {
+      const apiKey = JSON.parse(localStorage.getItem("MYKEY") || '"')
+      const response = await axios.post(
+        'https://api.openai.com/v1/chat/completions',
+        {
+          model: 'gpt-3.5-turbo',
+          messages: [
+            { role: 'system', content: 'You are a helpful career advisor.' },
+            { role: 'user', content: prompt }
+          ],
+          max_tokens: 150
+        },
+        {
+          headers: {
+            'Authorization': `Bearer ${apiKey}`,
+            'Content-Type': 'application/json'
+          }
+        }
+      );
+  
+      const recommendation = response.data.choices[0].message.content.trim();
+      setCareerRecommendation(recommendation);
+    } catch (error) {
+      console.error('Failed to fetch recommendation:', error);
+      setCareerRecommendation('Sorry, there was an error getting a recommendation.');
+    } finally {
+      setLoadingRecommendation(false);
+    }
+  };
+
 
   const handleAnswerChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (currentQuestionIndex === 0) {
@@ -209,6 +266,7 @@ export function DetailedQuizPage(): React.JSX.Element {
   const { question, answer} = getCurrentQuestionData();
 
 
+
   return (
     <div>
       {/* Top Bar */}
@@ -257,9 +315,29 @@ export function DetailedQuizPage(): React.JSX.Element {
 
             <Button onClick={nextQuestion}>Next Question</Button>
           ) : (
-            <Button disabled>Quiz Complete</Button>
+            ''
           )}
         </div>
+
+        {/*chatGPT button*/}
+
+          {notify && (
+          <div style={{ marginTop: '1rem' }}>
+          <Button onClick={getCareerRecommendation} disabled={loadingRecommendation}>
+          {loadingRecommendation ? 'Generating...' : 'Get Career Recommendation'}
+          </Button>
+          {careerRecommendation && (
+          <div style={{ marginTop: '1rem', background: '#f8f9fa', padding: '10px', borderRadius: '5px' }}>
+          <strong>Career Recommendation:</strong>
+          <p>{careerRecommendation}</p>
+          </div>
+          )}
+
+          </div>
+          )}
+
+
+        {/*end chatGPT button*/}
 
         {/* Progress Bar */}
         <div className="progress-row">

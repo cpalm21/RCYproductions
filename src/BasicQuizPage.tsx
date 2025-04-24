@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Button, Form } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 import './BasicQuizPage.css';
+import axios from 'axios';
 
 export function BasicQuizPage(): React.JSX.Element {
   const navigate = useNavigate();
@@ -14,17 +15,23 @@ export function BasicQuizPage(): React.JSX.Element {
     navigate('/DetailedQuizPage');
   };
 
+
+  //state for ChatGPT
+  const [careerRecommendation, setCareerRecommendation] = useState<string | null>(null);
+  const [loadingRecommendation, setLoadingRecommendation] = useState<boolean>(false);
+
   // State for answers (1 answer per question, total of 10 questions)
-  const [question1Answer, setQuestion1Answer] = useState<number | null>(null);
-  const [question2Answer, setQuestion2Answer] = useState<number | null>(null);
-  const [question3Answer, setQuestion3Answer] = useState<number | null>(null);
-  const [question4Answer, setQuestion4Answer] = useState<number | null>(null);
-  const [question5Answer, setQuestion5Answer] = useState<number | null>(null);
-  const [question6Answer, setQuestion6Answer] = useState<number | null>(null);
-  const [question7Answer, setQuestion7Answer] = useState<number | null>(null);
-  const [question8Answer, setQuestion8Answer] = useState<number | null>(null);
-  const [question9Answer, setQuestion9Answer] = useState<number | null>(null);
-  const [question10Answer, setQuestion10Answer] = useState<number | null>(null);
+
+  const [question1Answer, setQuestion1Answer] = useState<string | null>(null);
+  const [question2Answer, setQuestion2Answer] = useState<string | null>(null);
+  const [question3Answer, setQuestion3Answer] = useState<string | null>(null);
+  const [question4Answer, setQuestion4Answer] = useState<string | null>(null);
+  const [question5Answer, setQuetion5Answer] = useState<string | null>(null);
+  const [question6Answer, setQuestion6Answer] = useState<string | null>(null);
+  const [question7Answer, setQuestion7Answer] = useState<string | null>(null);
+  const [question8Answer, setQuestion8Answer] = useState<string | null>(null);
+  const [question9Answer, setQuestion9Answer] = useState<string | null>(null);
+  const [question10Answer, setQuestion10Answer] = useState<string | null>(null);
 
   // Progress state
   const [position, setPosition] = useState<number>(0);
@@ -56,71 +63,130 @@ export function BasicQuizPage(): React.JSX.Element {
       question6Answered &&
       question7Answered && 
       question8Answered && 
-      question9Answered && 
-      question10Answered) {
+      question9Answered ) {     
         setNotify(true);
     } else {
       setNotify(false);
     }
   }
 
+
+
+  //function for chatGPT
+  const getCareerRecommendation = async () => {
+    setLoadingRecommendation(true);
+  
+    const prompt = `
+  Based on the following responses from a career survey, suggest a career path that aligns with the user's values, preferences, and passions.
+  
+  1. ${question1Answer}
+  2. ${question2Answer}
+  3. ${question3Answer}
+  4. ${question4Answer}
+  5. ${question5Answer}
+  6. ${question6Answer}
+  7. ${question7Answer}
+  8. ${question8Answer}
+  9. ${question9Answer}
+  10. ${question10Answer}
+
+  Provide the recommendation in 2-3 sentences
+  `;
+  
+    try {
+      const apiKey = JSON.parse(localStorage.getItem("MYKEY") || '"')
+      const response = await axios.post(
+        'https://api.openai.com/v1/chat/completions',
+        {
+          model: 'gpt-3.5-turbo',
+          messages: [
+            { role: 'system', content: 'You are a helpful career advisor.' },
+            { role: 'user', content: prompt }
+          ],
+          max_tokens: 150
+        },
+        {
+          headers: {
+            'Authorization': `Bearer ${apiKey}`,
+            'Content-Type': 'application/json'
+          }
+        }
+      );
+  
+      const recommendation = response.data.choices[0].message.content.trim();
+      setCareerRecommendation(recommendation);
+    } catch (error) {
+      console.error('Failed to fetch recommendation:', error);
+      setCareerRecommendation('Sorry, there was an error getting a recommendation.');
+    } finally {
+      setLoadingRecommendation(false);
+    }
+  };
+
+
+
+
   const handleAnswerChange = (index: number) => {
+    
+    const { answers } = getCurrentQuestionData();
+    
     if (currentQuestionIndex === 0) {
-      setQuestion1Answer(index);
+      setQuestion1Answer(answers[index]);
+
       if (!question1Answered) {
         setPosition(position + 40);
         setQuestion1Answered(true);
       }
     } else if (currentQuestionIndex === 1) {
-      setQuestion2Answer(index);
+      setQuestion2Answer(answers[index]);
       if (!question2Answered) {
         setPosition(position + 40);
         setQuestion2Answered(true);
       }
     } else if (currentQuestionIndex === 2) {
-      setQuestion3Answer(index);
+      setQuestion3Answer(answers[index]);
       if (!question3Answered) {
         setPosition(position + 40);
         setQuestion3Answered(true);
       }
     } else if (currentQuestionIndex === 3) {
-      setQuestion4Answer(index);
+      setQuestion4Answer(answers[index]);
       if (!question4Answered) {
         setPosition(position + 40);
         setQuestion4Answered(true);
       }
     } else if (currentQuestionIndex === 4) {
-      setQuestion5Answer(index);
+      setQuestion5Answer(answers[index]);
       if (!question5Answered) {
         setPosition(position + 40);
         setQuestion5Answered(true);
       }
     } else if (currentQuestionIndex === 5) {
-      setQuestion6Answer(index);
+      setQuestion6Answer(answers[index]);
       if (!question6Answered) {
         setPosition(position + 40);
         setQuestion6Answered(true);
       }
     } else if (currentQuestionIndex === 6) {
-      setQuestion7Answer(index);
+      setQuestion7Answer(answers[index]);
       if (!question7Answered) {
         setPosition(position + 40);
         setQuestion7Answered(true);
       }
     } else if (currentQuestionIndex === 7) {
-      setQuestion8Answer(index);
+      setQuestion8Answer(answers[index]);
       if (!question8Answered) {
         setPosition(position + 40);
         setQuestion8Answered(true);
       }
     } else if (currentQuestionIndex === 8) {
-      setQuestion9Answer(index);
+      setQuestion9Answer(answers[index]);
       if (!question9Answered) {
         setPosition(position + 40);
         setQuestion9Answered(true);
       }
     } else if (currentQuestionIndex === 9) {
-      setQuestion10Answer(index);
+      setQuestion10Answer(answers[index]);
       if (!question10Answered) {
         setPosition(position + 40);
         setQuestion10Answered(true);
@@ -298,7 +364,7 @@ export function BasicQuizPage(): React.JSX.Element {
               type="radio"
               name="answer"
               label={answer}
-              checked={selectedAnswer === index}
+              checked={selectedAnswer === answers[index]}
               onChange={() => handleAnswerChange(index)}
               className="answer-radio"
             />
@@ -314,9 +380,29 @@ export function BasicQuizPage(): React.JSX.Element {
           {currentQuestionIndex < 9 ? (
             <Button onClick={nextQuestion}>Next Question</Button>
           ) : (
-            <Button disabled>Quiz Complete</Button>
+            ''
           )}
         </div>
+
+        {/*chatGPT button*/}
+        
+        {notify && (
+        <div style={{ marginTop: '1rem' }}>
+        <Button onClick={getCareerRecommendation} disabled={loadingRecommendation}>
+        {loadingRecommendation ? 'Generating...' : 'Get Career Recommendation'}
+        </Button>
+        {careerRecommendation && (
+        <div style={{ marginTop: '1rem', background: '#f8f9fa', padding: '10px', borderRadius: '5px' }}>
+        <strong>Career Recommendation:</strong>
+        <p>{careerRecommendation}</p>
+        </div>
+        )}
+        
+        </div>
+        )}
+        
+        
+        {/*end chatGPT button*/}
 
         {/* Progress Bar */}
         <div className="progress-row">
