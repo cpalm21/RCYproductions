@@ -26,7 +26,7 @@ export function BasicQuizPage(): React.JSX.Element {
   const [question2Answer, setQuestion2Answer] = useState<string | null>(null);
   const [question3Answer, setQuestion3Answer] = useState<string | null>(null);
   const [question4Answer, setQuestion4Answer] = useState<string | null>(null);
-  const [question5Answer, setQuetion5Answer] = useState<string | null>(null);
+  const [question5Answer, setQuestion5Answer] = useState<string | null>(null);
   const [question6Answer, setQuestion6Answer] = useState<string | null>(null);
   const [question7Answer, setQuestion7Answer] = useState<string | null>(null);
   const [question8Answer, setQuestion8Answer] = useState<string | null>(null);
