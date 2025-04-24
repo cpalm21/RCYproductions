@@ -4,7 +4,9 @@ import "./BasicQuizPage";
 import { useNavigate } from 'react-router-dom';
 import { Button, Form } from 'react-bootstrap';
 import './DetailedQuizPage.css';
+
 import axios from 'axios';
+
 
 
 export function DetailedQuizPage(): React.JSX.Element {
@@ -22,7 +24,6 @@ export function DetailedQuizPage(): React.JSX.Element {
   //state for chat gpt 
   const [careerRecommendation, setCareerRecommendation] = useState<string | null>(null);
   const [loadingRecommendation, setLoadingRecommendation] = useState<boolean>(false);
-
 
   // State for answers
   const [question1Answer, setQuestion1Answer] = useState<string>('');
@@ -65,6 +66,7 @@ export function DetailedQuizPage(): React.JSX.Element {
       setNotify(false);
     }
   }
+
 
   //function for ChatGPT
   const getCareerRecommendation = async () => {
@@ -114,6 +116,7 @@ export function DetailedQuizPage(): React.JSX.Element {
       setLoadingRecommendation(false);
     }
   };
+
 
   const handleAnswerChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (currentQuestionIndex === 0) {
@@ -261,8 +264,6 @@ export function DetailedQuizPage(): React.JSX.Element {
   };
 
   const { question, answer} = getCurrentQuestionData();
-
-
 
 
 
