@@ -119,6 +119,7 @@ export function BasicQuizPage(): React.JSX.Element {
 
     // Assigns the boolean in the array corresponding to our current question to true
     answeredArr[currentQuestionIndex] = true;
+    
     const { answers } = getCurrentQuestionData();
     
     if (currentQuestionIndex === 0) {
