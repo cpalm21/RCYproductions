@@ -51,26 +51,8 @@ export function BasicQuizPage(): React.JSX.Element {
   // Question index
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
 
-    // Flag for whether to display finished notification
-    const [notify, setNotify] = useState<boolean>(false);
-
-  const notifyIfDone = () => {
-    if(question1Answered &&
-      question2Answered &&
-      question3Answered &&
-      question4Answered &&
-      question5Answered &&
-      question6Answered &&
-      question7Answered && 
-      question8Answered && 
-      question9Answered ) {     
-        setNotify(true);
-    } else {
-      setNotify(false);
-    }
-  }
-
-
+  // Flag for whether to display finish notification
+  const [notify, setNotify] = useState<boolean>(false);
 
   //function for chatGPT
   const getCareerRecommendation = async () => {
@@ -122,12 +104,21 @@ export function BasicQuizPage(): React.JSX.Element {
       setLoadingRecommendation(false);
     }
   };
-
-
-
-
+  
   const handleAnswerChange = (index: number) => {
-    
+    // For Chris and Yaz:
+    // Makes a copy of the states that track whether a question has been answered or not
+    // We're going to use this for the if statements in the notifyIfDone function
+    // Because previously we were using the boolean states directly, only problem is those state are NOT updated immediately
+    // They're updated only after the component as a whole has been re-rendered
+    const answeredArr: boolean[] = [question1Answered,question2Answered,
+      question3Answered,question4Answered,
+      question5Answered,question6Answered,
+      question7Answered, question8Answered,
+      question9Answered, question10Answered];
+
+    // Assigns the boolean in the array corresponding to our current question to true
+    answeredArr[currentQuestionIndex] = true;
     const { answers } = getCurrentQuestionData();
     
     if (currentQuestionIndex === 0) {
@@ -193,9 +184,26 @@ export function BasicQuizPage(): React.JSX.Element {
       }
     }
 
-    notifyIfDone();
+    notifyIfDone(answeredArr);
 
   };
+
+  const notifyIfDone = (answeredArr: boolean[]) => {
+    if(answeredArr[0] &&
+      answeredArr[1] &&
+      answeredArr[2] &&
+      answeredArr[3] &&
+      answeredArr[4] &&
+      answeredArr[5] &&
+      answeredArr[6] && 
+      answeredArr[7] && 
+      answeredArr[8] &&
+      answeredArr[9] ) {     
+        setNotify(true);
+    } else {
+      setNotify(false);
+    }
+  }
 
   const nextQuestion = () => {
     if (currentQuestionIndex < 9) {
