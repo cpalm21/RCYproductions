@@ -10,6 +10,13 @@ import axios from 'axios';
 
 
 export function DetailedQuizPage(): React.JSX.Element {
+  
+  interface Career{
+    title: string;
+    salary: number;
+    summary: string;
+    match: string;
+  }
 
   const navigate = useNavigate();
 
@@ -22,7 +29,7 @@ export function DetailedQuizPage(): React.JSX.Element {
   };
 
   //state for chat gpt 
-  const [careerRecommendation, setCareerRecommendation] = useState<string | null>(null);
+  const [careerRecommendation, setCareerRecommendation] = useState<Career[]>([]);
   const [loadingRecommendation, setLoadingRecommendation] = useState<boolean>(false);
 
   // State for answers
@@ -58,20 +65,16 @@ export function DetailedQuizPage(): React.JSX.Element {
   const getCareerRecommendation = async () => {
     setLoadingRecommendation(true);
   
-    const prompt = `
-  Based on the following responses from a career survey, suggest a career path that aligns with the user's values, preferences, and passions.
-  
-  1. ${question1Answer}
-  2. ${question2Answer}
-  3. ${question3Answer}
-  4. ${question4Answer}
-  5. ${question5Answer}
-  6. ${question6Answer}
-  7. ${question7Answer}
-  
-  Provide the recommendation in 2-3 sentences.
-  Also, at the end of the response, can you say "have a nice day!"
-  `;
+    const prompt = `Based on the following responses, suggest the top 3 best-fit careers. Return the response as a JSON array of objects with fields: title, salary, summary, and match (percentage).
+
+1. ${question1Answer}
+2. ${question2Answer}
+3. ${question3Answer}
+4. ${question4Answer}
+5. ${question5Answer}
+6. ${question6Answer}
+7. ${question7Answer}`
+;
   
     try {
       const apiKey = JSON.parse(localStorage.getItem("MYKEY") || '"')
@@ -93,11 +96,18 @@ export function DetailedQuizPage(): React.JSX.Element {
         }
       );
   
-      const recommendation = response.data.choices[0].message.content.trim();
-      setCareerRecommendation(recommendation);
+      let raw = response.data.choices[0].message.content.trim();
+      if (raw.startsWith("```json")) raw = raw.replace(/^```json/, '').replace(/```$/, '').trim();
+      else if (raw.startsWith("```")) raw = raw.replace(/^```/, '').replace(/```$/, '').trim();
+
+      try {
+        const parsed = JSON.parse(raw);
+        setCareerRecommendation(parsed);
+      } catch {
+        console.error("Failed to parse response JSON.");
+      }
     } catch (error) {
       console.error('Failed to fetch recommendation:', error);
-      setCareerRecommendation('Sorry, there was an error getting a recommendation.');
     } finally {
       setLoadingRecommendation(false);
     }
@@ -353,9 +363,17 @@ export function DetailedQuizPage(): React.JSX.Element {
           {loadingRecommendation ? 'Generating...' : 'Get Career Recommendation'}
           </Button>
           {careerRecommendation && (
-          <div style={{ marginTop: '1rem', background: '#f8f9fa', padding: '10px', borderRadius: '5px' }}>
-          <strong>Career Recommendation:</strong>
-          <p>{careerRecommendation}</p>
+          <div className="career-wrapper">
+          <p className="career-title">Your Suggested Careers: </p>
+          {careerRecommendation.map((career, index) => (
+            <div className="career-card" key={index}>
+              <h3>💼 {career.title}</h3>
+              <p><strong>💰 Salary: </strong> {career.salary}</p>
+              <p><strong>🎯 Match:</strong> {career.match}</p>
+              <p>{career.summary}</p>
+              </div>
+          ))}
+          
           </div>
           )}
 

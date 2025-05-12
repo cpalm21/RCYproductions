@@ -6,11 +6,20 @@ import './BasicQuizPage.css';
 import axios from 'axios';
 
 export function BasicQuizPage(): React.JSX.Element {
+  
+  interface Career{
+    title: string;
+    salary: number;
+    summary: string;
+    match:number;
+  }
+
+  
   const navigate = useNavigate();
   const goToHome = () => navigate('/');
   const goToDetailed = () => navigate('/DetailedQuizPage');
 
-  const [careerRecommendations, setCareerRecommendations] = useState<any[]>([]);
+  const [careerRecommendations, setCareerRecommendations] = useState<Career[]>([]);
   const [loadingRecommendation, setLoadingRecommendation] = useState<boolean>(false);
 
   const [question1Answer, setQuestion1Answer] = useState<string | null>(null);
