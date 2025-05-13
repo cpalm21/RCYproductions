@@ -362,7 +362,7 @@ export function DetailedQuizPage(): React.JSX.Element {
           <Button onClick={getCareerRecommendation} disabled={loadingRecommendation}>
           {loadingRecommendation ? 'Generating...' : 'Get Career Recommendation'}
           </Button>
-          {careerRecommendation && (
+          {careerRecommendation.length > 0 && (
           <div className="career-wrapper">
           <p className="career-title">Your Suggested Careers: </p>
           {careerRecommendation.map((career, index) => (
