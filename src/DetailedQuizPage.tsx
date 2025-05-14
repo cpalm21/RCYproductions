@@ -65,7 +65,8 @@ export function DetailedQuizPage(): React.JSX.Element {
   const getCareerRecommendation = async () => {
     setLoadingRecommendation(true);
   
-    const prompt = `Based on the following responses, suggest the top 3 best-fit careers. Return the response as a JSON array of objects with fields: title, salary, summary, and match (percentage).
+    const prompt = `Based on the following responses, suggest the top 3 best-fit careers. Return the response as a JSON array of objects with fields: title, salary, match: (percentage), summary: make it detailed and around 5-6 sentences.
+
 
 1. ${question1Answer}
 2. ${question2Answer}
@@ -86,7 +87,7 @@ export function DetailedQuizPage(): React.JSX.Element {
             { role: 'system', content: 'You are a helpful career advisor.' },
             { role: 'user', content: prompt }
           ],
-          max_tokens: 150
+          max_tokens: 1000
         },
         {
           headers: {
