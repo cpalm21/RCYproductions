@@ -55,11 +55,20 @@ export function Homepage(): React.JSX.Element {
               <div className="about-text">
                 The Basic Quiz is a short assessment ideal for general exploration.
               </div>
+              
             </div>
           </div>
 
+      
         </div>
       </div>
+      
+         {/* About Us Button*/}
+        <div className="about-button-container">
+          <Button variant="secondary" className="about-button">
+            About Us
+          </Button>
+        </div>
     </div>
   );
 }
