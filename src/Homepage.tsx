@@ -7,6 +7,7 @@ export function Homepage(): React.JSX.Element {
 
   const goToDetailed = () => navigate('/DetailedQuizPage');
   const goToBasic = () => navigate('/BasicQuizPage');
+  const goToAbout = () => navigate('/AboutPage')
 
   return (
     <div className="homepage" style={{ marginTop: '0px' }}>
@@ -65,7 +66,7 @@ export function Homepage(): React.JSX.Element {
       
          {/* About Us Button*/}
         <div className="about-button-container">
-          <Button variant="secondary" className="about-button">
+          <Button onClick={goToAbout} variant="secondary" className="about-button">
             About Us
           </Button>
         </div>

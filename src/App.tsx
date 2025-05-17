@@ -5,6 +5,7 @@ import { Button, Form } from 'react-bootstrap';
 import { Homepage } from "./Homepage";
 import {DetailedQuizPage} from "./DetailedQuizPage"
 import {BasicQuizPage} from "./BasicQuizPage"
+import {AboutPage} from "./AboutUsPage"
 
 import {Routes, Route} from "react-router-dom"
 
@@ -39,6 +40,7 @@ function App() {
       <Routes>
       <Route path = "/BasicQuizPage" element = {<BasicQuizPage/>}/>
       <Route path = "/DetailedQuizPage" element={<DetailedQuizPage/>}/>
+      <Route path = "/AboutPage" element={<AboutPage/>}/>
 
       <Route
       path="/"
