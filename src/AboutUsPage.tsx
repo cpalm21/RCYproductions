@@ -1,4 +1,4 @@
-import { Button, Nav, Navbar } from "react-bootstrap";
+
 import { useNavigate } from "react-router-dom";
 
 export function AboutPage(): React.JSX.Element {
