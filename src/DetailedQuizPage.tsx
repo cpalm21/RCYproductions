@@ -31,6 +31,7 @@ export function DetailedQuizPage(): React.JSX.Element {
   //state for chat gpt 
   const [careerRecommendation, setCareerRecommendation] = useState<Career[]>([]);
   const [loadingRecommendation, setLoadingRecommendation] = useState<boolean>(false);
+  const [errorGenerating, setErrorGenerating] = useState<boolean>(false);
 
   // State for answers
   const [question1Answer, setQuestion1Answer] = useState<string>('');
@@ -74,7 +75,9 @@ export function DetailedQuizPage(): React.JSX.Element {
 4. ${question4Answer}
 5. ${question5Answer}
 6. ${question6Answer}
-7. ${question7Answer}`
+7. ${question7Answer}
+If you can't recommend a career based on the user's answers, say "Need better answers"
+`
 ;
   
     try {
@@ -104,8 +107,9 @@ export function DetailedQuizPage(): React.JSX.Element {
       try {
         const parsed = JSON.parse(raw);
         setCareerRecommendation(parsed);
-      } catch {
+      } catch (error) {
         console.error("Failed to parse response JSON.");
+        setErrorGenerating(true);
       }
     } catch (error) {
       console.error('Failed to fetch recommendation:', error);
@@ -379,6 +383,10 @@ export function DetailedQuizPage(): React.JSX.Element {
           )}
 
           </div>
+          )}
+
+          {errorGenerating && (
+            <div>There was an error generating your career recommendation. Please give more descriptive answers and try again🙂</div>
           )}
 
 
