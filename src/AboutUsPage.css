@@ -1,0 +1,90 @@
+/* Navbar */
+.top-navbar {
+  background-color: #284a72;
+  width: 100%;
+  padding: 10px 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  position: relative;
+  top: 0;
+}
+
+.top-navbar .btn {
+  background-color: #3F72AF !important;
+  color: white !important;
+  font-weight: bold;
+  border-radius: 6px;
+  padding: 8px 16px;
+}
+
+.about-title {
+  color: #3F72AF;
+}
+
+
+
+/* Quiz Section */
+.cards-section {
+  margin-top: 50px;
+  display: flex;
+  justify-content: center;
+}
+
+.personal-cards {
+  display: flex;
+  gap: 60px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+
+
+
+
+
+
+
+.personal-card {
+  width: 300px;
+  padding: 40px;
+  margin: 0 20px;
+  background-color: #D6E4F0;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+  border: none;
+  border-radius: 12px;
+  color: #2C3E50;
+  transition: transform 0.2s;
+}
+
+.personal-card:hover {
+  transform: translateY(-5px);
+}
+
+.personal-card .card-title {
+  font-weight: bold;
+  font-size: 22px;
+}
+
+.personal-card .card-text {
+  font-size: 16px;
+}
+
+
+
+
+
+
+.user-icon {
+  display: block;
+  margin: 0 auto 15px auto; 
+  width: 70px; 
+  height: 70px;
+  border-radius: 50%;
+  object-fit: cover;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+}
+body {
+  padding-bottom: 30px;
+}
