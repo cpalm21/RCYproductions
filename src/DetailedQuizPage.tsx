@@ -173,7 +173,7 @@ export function DetailedQuizPage(): React.JSX.Element {
 
         {notify && <Form.Label>You've completed all the questions for the Detailed Assessment! ✔️</Form.Label>}
 
-        <div style={{display: "flex", justifyContent: "center", gap: "2px"}}>
+        <div style={{display: "flex", justifyContent: "center", gap: "2px", marginTop: "10px"}}>
           {indexes.map((ind: number) =>
             <Button onClick={() => goToQuestion(ind)} key={ind} value={ind}>{ind + 1}</Button>
           )}
