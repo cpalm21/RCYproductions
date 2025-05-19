@@ -2,25 +2,15 @@
 import React, { useState } from 'react';
 import { Button, Form } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
+import { CareerResults } from './Career';
 import './BasicQuizPage.css';
-import axios from 'axios';
+
 
 export function BasicQuizPage(): React.JSX.Element {
-  
-  interface Career{
-    title: string;
-    salary: number;
-    summary: string;
-    match:number;
-  }
 
-  
   const navigate = useNavigate();
   const goToHome = () => navigate('/');
   const goToDetailed = () => navigate('/DetailedQuizPage');
-
-  const [careerRecommendations, setCareerRecommendations] = useState<Career[]>([]);
-  const [loadingRecommendation, setLoadingRecommendation] = useState<boolean>(false);
 
   const [question1Answer, setQuestion1Answer] = useState<string | null>(null);
   const [question2Answer, setQuestion2Answer] = useState<string | null>(null);
@@ -37,11 +27,6 @@ export function BasicQuizPage(): React.JSX.Element {
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [notify, setNotify] = useState<boolean>(false);
   const [answered, setAnswered] = useState<boolean[]>(Array(10).fill(false));
-
-  const getCareerRecommendation = async () => {
-    setLoadingRecommendation(true);
-    setCareerRecommendations([]);
-
     const prompt = `Based on the following responses, suggest the top 3 best-fit careers. Return the response as a JSON array of objects with fields: title, salary, summary, and match (percentage).
 
 1. ${question1Answer}
@@ -55,42 +40,6 @@ export function BasicQuizPage(): React.JSX.Element {
 9. ${question9Answer}
 10. ${question10Answer}`;
 
-    try {
-      const apiKey = JSON.parse(localStorage.getItem("MYKEY") || '""');
-      const response = await axios.post(
-        'https://api.openai.com/v1/chat/completions',
-        {
-          model: 'gpt-3.5-turbo',
-          messages: [
-            { role: 'system', content: 'You are a helpful career advisor.' },
-            { role: 'user', content: prompt }
-          ],
-          max_tokens: 500
-        },
-        {
-          headers: {
-            'Authorization': `Bearer ${apiKey}`,
-            'Content-Type': 'application/json'
-          }
-        }
-      );
-
-      let raw = response.data.choices[0].message.content.trim();
-      if (raw.startsWith("```json")) raw = raw.replace(/^```json/, '').replace(/```$/, '').trim();
-      else if (raw.startsWith("```")) raw = raw.replace(/^```/, '').replace(/```$/, '').trim();
-
-      try {
-        const parsed = JSON.parse(raw);
-        setCareerRecommendations(parsed);
-      } catch {
-        console.error("Failed to parse response JSON.");
-      }
-    } catch (error) {
-      console.error('Failed to fetch recommendation:', error);
-    } finally {
-      setLoadingRecommendation(false);
-    }
-  };
 
   const handleAnswerChange = (index: number) => {
     const answers = questions[currentQuestionIndex].answers;
@@ -231,31 +180,13 @@ export function BasicQuizPage(): React.JSX.Element {
             />
           </div>
         ))}
+
         {notify && <Form.Label>You've completed all the questions for the Basic Assessment! ✔️</Form.Label>}
         <div className="navigation">
           <Button onClick={prevQuestion} disabled={currentQuestionIndex === 0}>Previous Question</Button>
           {currentQuestionIndex < 9 && <Button onClick={nextQuestion}>Next Question</Button>}
         </div>
-        {notify && (
-          <div style={{ marginTop: '1rem' }}>
-            <Button onClick={getCareerRecommendation} disabled={loadingRecommendation}>
-              {loadingRecommendation ? 'Generating...' : 'Get Career Recommendation'}
-            </Button>
-            {careerRecommendations.length > 0 && (
-              <div className="career-wrapper">
-                <p className="career-title">Your Suggested Careers:</p>
-                {careerRecommendations.map((career, index) => (
-                  <div className="career-card" key={index}>
-                    <h3>💼 {career.title}</h3>
-                    <p><strong>💰 Salary:</strong> {career.salary}</p>
-                    <p><strong>🎯 Match:</strong> {career.match}</p>
-                    <p>{career.summary}</p>
-                  </div>
-                ))}
-              </div>
-            )}
-          </div>
-        )}
+        {notify && (<CareerResults chatPrompt={prompt} tokens={500}></CareerResults>)}
         <div className="progress-row">
           <span className="progress-label">Progress:</span>
           <div className="moveable-box-container">
