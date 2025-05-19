@@ -1,37 +1,14 @@
 import React, { useState} from 'react';
-import "./Homepage";
-import "./BasicQuizPage";
 import { useNavigate } from 'react-router-dom';
 import { Button, Form } from 'react-bootstrap';
+import { CareerResults } from './Career';
 import './DetailedQuizPage.css';
 
-import axios from 'axios';
-
-
-
 export function DetailedQuizPage(): React.JSX.Element {
-  
-  interface Career{
-    title: string;
-    salary: number;
-    summary: string;
-    match: string;
-  }
 
   const navigate = useNavigate();
-
-  const goToHome = () => {
-    navigate('/');
-  };
-
-  const goToBasic = () => {
-    navigate('/BasicQuizPage');
-  };
-
-  //state for chat gpt 
-  const [careerRecommendation, setCareerRecommendation] = useState<Career[]>([]);
-  const [loadingRecommendation, setLoadingRecommendation] = useState<boolean>(false);
-  const [errorGenerating, setErrorGenerating] = useState<boolean>(false);
+  const goToHome = () => navigate('/');
+  const goToBasic = () => navigate('/BasicQuizPage');
 
   // State for answers
   const [question1Answer, setQuestion1Answer] = useState<string>('');
@@ -61,13 +38,7 @@ export function DetailedQuizPage(): React.JSX.Element {
   // Flag for whether to display finished notification
   const [notify, setNotify] = useState<boolean>(false);
 
-
-  //function for ChatGPT
-  const getCareerRecommendation = async () => {
-    setLoadingRecommendation(true);
-  
-    const prompt = `Based on the following responses, suggest the top 3 best-fit careers. Return the response as a JSON array of objects with fields: title, salary, match: (percentage), summary: make it detailed and around 5-6 sentences.
-
+    const prompt: string = `Based on the following responses, suggest the top 3 best-fit careers. Return the response as a JSON array of objects with fields: title, salary, match: (percentage), summary: make it detailed and around 5-6 sentences.
 
 1. ${question1Answer}
 2. ${question2Answer}
@@ -75,68 +46,27 @@ export function DetailedQuizPage(): React.JSX.Element {
 4. ${question4Answer}
 5. ${question5Answer}
 6. ${question6Answer}
-7. ${question7Answer}
-If you can't recommend a career based on the user's answers, say "Need better answers"
-`
-;
-  
-    try {
-      const apiKey = JSON.parse(localStorage.getItem("MYKEY") || '"')
-      const response = await axios.post(
-        'https://api.openai.com/v1/chat/completions',
-        {
-          model: 'gpt-3.5-turbo',
-          messages: [
-            { role: 'system', content: 'You are a helpful career advisor.' },
-            { role: 'user', content: prompt }
-          ],
-          max_tokens: 1000
-        },
-        {
-          headers: {
-            'Authorization': `Bearer ${apiKey}`,
-            'Content-Type': 'application/json'
-          }
-        }
-      );
-  
-      let raw = response.data.choices[0].message.content.trim();
-      if (raw.startsWith("```json")) raw = raw.replace(/^```json/, '').replace(/```$/, '').trim();
-      else if (raw.startsWith("```")) raw = raw.replace(/^```/, '').replace(/```$/, '').trim();
+7. ${question7Answer}`;
 
-      try {
-        const parsed = JSON.parse(raw);
-        setCareerRecommendation(parsed);
-      } catch (error) {
-        console.error("Failed to parse response JSON.");
-        setErrorGenerating(true);
-      }
-    } catch (error) {
-      console.error('Failed to fetch recommendation:', error);
-    } finally {
-      setLoadingRecommendation(false);
-    }
-  };
-
-
-  const handleAnswerChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    // For Chris and Yaz:
     // Makes a copy of the states that track whether a question has been answered or not
     // We're going to use this for the if statements in the notifyIfDone function
     // Because previously we were using the boolean states directly, only problem is those state are NOT updated immediately
     // They're updated only after the component as a whole has been re-rendered
+    // This corrects for the progress not updating correctly
+  const handleAnswerChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const answeredArr: boolean[] = [question1Answered,question2Answered,
       question3Answered,question4Answered,
       question5Answered,question6Answered,
       question7Answered];
 
     const stringAns: string = e.target.value;
+    console.log(stringAns);
 
     if (currentQuestionIndex === 0) {
 
       setQuestion1Answer(stringAns);
 
-      if (!question1Answered && stringAns.length === 3) {
+      if (!question1Answered && stringAns.length >= 3) {
         setPosition(position + 57);
         setQuestion1Answered(true);
         answeredArr[currentQuestionIndex] = true;
@@ -150,7 +80,7 @@ If you can't recommend a career based on the user's answers, say "Need better an
 
       setQuestion2Answer(stringAns);
 
-      if (!question2Answered && stringAns.length === 3) {
+      if (!question2Answered && stringAns.length >= 3) {
         setPosition(position + 57);
         setQuestion2Answered(true);
         answeredArr[currentQuestionIndex] = true;
@@ -164,7 +94,7 @@ If you can't recommend a career based on the user's answers, say "Need better an
 
       setQuestion3Answer(stringAns);
 
-      if (!question3Answered && stringAns.length === 3) {
+      if (!question3Answered && stringAns.length >= 3) {
         setPosition(position + 57);
         setQuestion3Answered(true);
         answeredArr[currentQuestionIndex] = true;
@@ -178,7 +108,7 @@ If you can't recommend a career based on the user's answers, say "Need better an
 
       setQuestion4Answer(stringAns);
 
-      if (!question4Answered && stringAns.length === 3) {
+      if (!question4Answered && stringAns.length >= 3) {
         setPosition(position + 57);
         setQuestion4Answered(true);
         answeredArr[currentQuestionIndex] = true;
@@ -192,7 +122,7 @@ If you can't recommend a career based on the user's answers, say "Need better an
 
       setQuestion5Answer(stringAns);
 
-      if (!question5Answered && stringAns.length === 3) {
+      if (!question5Answered && stringAns.length >= 3) {
         setPosition(position + 57);
         setQuestion5Answered(true);
         answeredArr[currentQuestionIndex] = true;
@@ -206,7 +136,7 @@ If you can't recommend a career based on the user's answers, say "Need better an
 
       setQuestion6Answer(stringAns);
 
-      if (!question6Answered && stringAns.length === 3) {
+      if (!question6Answered && stringAns.length >= 3) {
         setPosition(position + 57);
         setQuestion6Answered(true);
         answeredArr[currentQuestionIndex] = true;
@@ -220,7 +150,7 @@ If you can't recommend a career based on the user's answers, say "Need better an
 
       setQuestion7Answer(stringAns);
 
-      if (!question7Answered && stringAns.length === 3) {
+      if (!question7Answered && stringAns.length >= 3) {
         setPosition(position + 57);
         setQuestion7Answered(true);
         answeredArr[currentQuestionIndex] = true;
@@ -360,37 +290,7 @@ If you can't recommend a career based on the user's answers, say "Need better an
           )}
         </div>
 
-        {/*chatGPT button*/}
-
-          {notify && (
-          <div style={{ marginTop: '1rem' }}>
-          <Button onClick={getCareerRecommendation} disabled={loadingRecommendation}>
-          {loadingRecommendation ? 'Generating...' : 'Get Career Recommendation'}
-          </Button>
-          {careerRecommendation.length > 0 && (
-          <div className="career-wrapper">
-          <p className="career-title">Your Suggested Careers: </p>
-          {careerRecommendation.map((career, index) => (
-            <div className="career-card" key={index}>
-              <h3>💼 {career.title}</h3>
-              <p><strong>💰 Salary: </strong> {career.salary}</p>
-              <p><strong>🎯 Match:</strong> {career.match}</p>
-              <p>{career.summary}</p>
-              </div>
-          ))}
-          
-          </div>
-          )}
-
-          </div>
-          )}
-
-          {errorGenerating && (
-            <div>There was an error generating your career recommendation. Please give more descriptive answers and try again🙂</div>
-          )}
-
-
-        {/*end chatGPT button*/}
+        {notify && (<CareerResults chatPrompt={prompt} tokens={1000}></CareerResults>)}
 
         {/* Progress Bar */}
         <div className="progress-row">

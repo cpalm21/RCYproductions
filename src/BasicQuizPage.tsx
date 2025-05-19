@@ -1,4 +1,3 @@
-// BasicQuizPage.tsx
 import React, { useState } from 'react';
 import { Button, Form } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
@@ -27,7 +26,8 @@ export function BasicQuizPage(): React.JSX.Element {
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [notify, setNotify] = useState<boolean>(false);
   const [answered, setAnswered] = useState<boolean[]>(Array(10).fill(false));
-    const prompt = `Based on the following responses, suggest the top 3 best-fit careers. Return the response as a JSON array of objects with fields: title, salary, summary, and match (percentage).
+
+    const prompt: string = `Based on the following responses, suggest the top 3 best-fit careers. Return the response as a JSON array of objects with fields: title, salary, summary, and match (percentage).
 
 1. ${question1Answer}
 2. ${question2Answer}

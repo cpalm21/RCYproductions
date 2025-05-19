@@ -16,9 +16,12 @@ export function CareerResults({chatPrompt, tokens}: ChatPromptProps): React.JSX.
         summary: string;
         match:number;
     }
-
+    
+    //state for chat gpt 
     const [careerRecommendations, setCareerRecommendations] = useState<Career[]>([]);
     const [loadingRecommendation, setLoadingRecommendation] = useState<boolean>(false);
+    const [errorGenerating, setErrorGenerating] = useState<boolean>(false);
+
     const getCareerRecommendation = async () => {
         setLoadingRecommendation(true);
         setCareerRecommendations([]);
@@ -28,18 +31,18 @@ export function CareerResults({chatPrompt, tokens}: ChatPromptProps): React.JSX.
         const response = await axios.post(
             'https://api.openai.com/v1/chat/completions',
             {
-            model: 'gpt-3.5-turbo',
-            messages: [
-                { role: 'system', content: 'You are a helpful career advisor.' },
-                { role: 'user', content: chatPrompt }
-            ],
-            max_tokens: tokens
+                model: 'gpt-3.5-turbo',
+                messages: [
+                    { role: 'system', content: 'You are a helpful career advisor.' },
+                    { role: 'user', content: chatPrompt }
+                ],
+                max_tokens: tokens
             },
             {
-            headers: {
-                'Authorization': `Bearer ${apiKey}`,
-                'Content-Type': 'application/json'
-            }
+                headers: {
+                    'Authorization': `Bearer ${apiKey}`,
+                    'Content-Type': 'application/json'
+                }
             }
         );
 
@@ -50,8 +53,10 @@ export function CareerResults({chatPrompt, tokens}: ChatPromptProps): React.JSX.
         try {
             const parsed = JSON.parse(raw);
             setCareerRecommendations(parsed);
-        } catch {
+            setErrorGenerating(false);
+        } catch (error) {
             console.error("Failed to parse response JSON.");
+            setErrorGenerating(true);
         }
         } catch (error) {
             console.error('Failed to fetch recommendation:', error);
@@ -62,23 +67,34 @@ export function CareerResults({chatPrompt, tokens}: ChatPromptProps): React.JSX.
 
 
     return (
-        <div style={{ marginTop: '1rem' }}>
-            <Button onClick={getCareerRecommendation} disabled={loadingRecommendation}>
-                {loadingRecommendation ? 'Generating...' : 'Get Career Recommendation'}
-            </Button>
-            {careerRecommendations.length > 0 && (
-                <div className="career-wrapper">
-                    <p className="career-title">Your Suggested Careers:</p>
-                    {careerRecommendations.map((career, index) => (
-                        <div className="career-card" key={index}>
-                            <h3>💼 {career.title}</h3>
-                            <p><strong>💰 Salary:</strong> {career.salary}</p>
-                            <p><strong>🎯 Match:</strong> {career.match}</p>
-                            <p>{career.summary}</p>
-                        </div>
-                    ))}
-                </div>
+        <div>
+            {/*chatGPT button*/}
+
+            <div style={{ marginTop: '1rem' }}>
+                <Button onClick={getCareerRecommendation} disabled={loadingRecommendation}>
+                    {loadingRecommendation ? 'Generating...' : 'Get Career Recommendation'}
+                </Button>
+                {careerRecommendations.length > 0 && (
+                    <div className="career-wrapper">
+                        <p className="career-title">Your Suggested Careers:</p>
+                        {careerRecommendations.map((career, index) => (
+                            <div className="career-card" key={index}>
+                                <h3>💼 {career.title}</h3>
+                                <p><strong>💰 Salary:</strong> {career.salary}</p>
+                                <p><strong>🎯 Match:</strong> {career.match}</p>
+                                <p>{career.summary}</p>
+                            </div>
+                        ))}
+                    </div>
+                )}
+            </div>
+
+            {errorGenerating && (
+                <div>There was an error generating your career recommendation. If you're on the detailed quiz, please check your answers and try again. 🙂</div>
             )}
+
+            {/*end chatGPT button*/}
         </div>
+        
     );
 }
