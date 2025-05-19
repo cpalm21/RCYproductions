@@ -47,8 +47,6 @@ export function DetailedQuizPage(): React.JSX.Element {
     const currentAnsArr: string[] = [...answers];
     const stringAns: string = e.target.value;
     currentAnsArr[currentQuestionIndex] = stringAns;
-    console.log(stringAns);
-    console.log(prompt);
 
     setAnswers(currentAnsArr);
 
