@@ -60,7 +60,7 @@ export function CareerResults({chatPrompt, tokens}: ChatPromptProps): React.JSX.
         }
         } catch (error) {
             console.error('Failed to fetch recommendation:', error);
-            setErrorGenerating(true);
+            //setErrorGenerating(true);
         } finally {
             setLoadingRecommendation(false);
         }
