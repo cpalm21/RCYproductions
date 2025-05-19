@@ -119,3 +119,22 @@
   font-size: 18px;
   margin-top: 10px;
 }
+
+
+
+.about-button {
+  background-color: #3F72AF;
+  color: white;
+  font-weight: bold;
+  padding: 10px 24px;
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  transition: background-color 0.3s ease;
+  margin-top: 40px; /* increased from 40px to 80px */
+ margin-bottom: 30px;
+}
+
+.about-button:hover {
+  background-color: #2C3E50;
+}

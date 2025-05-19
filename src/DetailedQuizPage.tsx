@@ -10,6 +10,13 @@ import axios from 'axios';
 
 
 export function DetailedQuizPage(): React.JSX.Element {
+  
+  interface Career{
+    title: string;
+    salary: number;
+    summary: string;
+    match: string;
+  }
 
   const navigate = useNavigate();
 
@@ -22,8 +29,9 @@ export function DetailedQuizPage(): React.JSX.Element {
   };
 
   //state for chat gpt 
-  const [careerRecommendation, setCareerRecommendation] = useState<string | null>(null);
+  const [careerRecommendation, setCareerRecommendation] = useState<Career[]>([]);
   const [loadingRecommendation, setLoadingRecommendation] = useState<boolean>(false);
+  const [errorGenerating, setErrorGenerating] = useState<boolean>(false);
 
   // State for answers
   const [question1Answer, setQuestion1Answer] = useState<string>('');
@@ -53,39 +61,24 @@ export function DetailedQuizPage(): React.JSX.Element {
   // Flag for whether to display finished notification
   const [notify, setNotify] = useState<boolean>(false);
 
-  const notifyIfDone = () => {
-    if(question1Answered &&
-       question2Answered &&
-        question3Answered &&
-         question4Answered &&
-          question5Answered &&
-           question6Answered &&
-            question7Answered) {
-              setNotify(true);
-    } else {
-      setNotify(false);
-    }
-  }
-
 
   //function for ChatGPT
   const getCareerRecommendation = async () => {
     setLoadingRecommendation(true);
   
-    const prompt = `
-  Based on the following responses from a career survey, suggest a career path that aligns with the user's values, preferences, and passions.
-  
-  1. ${question1Answer}
-  2. ${question2Answer}
-  3. ${question3Answer}
-  4. ${question4Answer}
-  5. ${question5Answer}
-  6. ${question6Answer}
-  7. ${question7Answer}
-  
-  Provide the recommendation in 2-3 sentences.
-  Also, at the end of the response, can you say "have a nice day!"
-  `;
+    const prompt = `Based on the following responses, suggest the top 3 best-fit careers. Return the response as a JSON array of objects with fields: title, salary, match: (percentage), summary: make it detailed and around 5-6 sentences.
+
+
+1. ${question1Answer}
+2. ${question2Answer}
+3. ${question3Answer}
+4. ${question4Answer}
+5. ${question5Answer}
+6. ${question6Answer}
+7. ${question7Answer}
+If you can't recommend a career based on the user's answers, say "Need better answers"
+`
+;
   
     try {
       const apiKey = JSON.parse(localStorage.getItem("MYKEY") || '"')
@@ -97,7 +90,7 @@ export function DetailedQuizPage(): React.JSX.Element {
             { role: 'system', content: 'You are a helpful career advisor.' },
             { role: 'user', content: prompt }
           ],
-          max_tokens: 150
+          max_tokens: 1000
         },
         {
           headers: {
@@ -107,11 +100,19 @@ export function DetailedQuizPage(): React.JSX.Element {
         }
       );
   
-      const recommendation = response.data.choices[0].message.content.trim();
-      setCareerRecommendation(recommendation);
+      let raw = response.data.choices[0].message.content.trim();
+      if (raw.startsWith("```json")) raw = raw.replace(/^```json/, '').replace(/```$/, '').trim();
+      else if (raw.startsWith("```")) raw = raw.replace(/^```/, '').replace(/```$/, '').trim();
+
+      try {
+        const parsed = JSON.parse(raw);
+        setCareerRecommendation(parsed);
+      } catch (error) {
+        console.error("Failed to parse response JSON.");
+        setErrorGenerating(true);
+      }
     } catch (error) {
       console.error('Failed to fetch recommendation:', error);
-      setCareerRecommendation('Sorry, there was an error getting a recommendation.');
     } finally {
       setLoadingRecommendation(false);
     }
@@ -119,95 +120,135 @@ export function DetailedQuizPage(): React.JSX.Element {
 
 
   const handleAnswerChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    // For Chris and Yaz:
+    // Makes a copy of the states that track whether a question has been answered or not
+    // We're going to use this for the if statements in the notifyIfDone function
+    // Because previously we were using the boolean states directly, only problem is those state are NOT updated immediately
+    // They're updated only after the component as a whole has been re-rendered
+    const answeredArr: boolean[] = [question1Answered,question2Answered,
+      question3Answered,question4Answered,
+      question5Answered,question6Answered,
+      question7Answered];
+
+    const stringAns: string = e.target.value;
+
     if (currentQuestionIndex === 0) {
 
-      setQuestion1Answer(e.target.value);
+      setQuestion1Answer(stringAns);
 
-      if (!question1Answered && question1Answer.length === 3) {
+      if (!question1Answered && stringAns.length === 3) {
         setPosition(position + 57);
         setQuestion1Answered(true);
-      } else if (question1Answered && question1Answer.length < 3){
+        answeredArr[currentQuestionIndex] = true;
+      } else if (question1Answered && stringAns.length < 3){
         setPosition(position - 57);
         setQuestion1Answered(false);
+        answeredArr[currentQuestionIndex] = false;
       }
 
     } else if (currentQuestionIndex === 1) {
 
-      setQuestion2Answer(e.target.value);
+      setQuestion2Answer(stringAns);
 
-      if (!question2Answered && question2Answer.length === 3) {
+      if (!question2Answered && stringAns.length === 3) {
         setPosition(position + 57);
         setQuestion2Answered(true);
-      } else if (question2Answered && question2Answer.length < 3){
+        answeredArr[currentQuestionIndex] = true;
+      } else if (question2Answered && stringAns.length < 3){
         setPosition(position - 57);
         setQuestion2Answered(false);
+        answeredArr[currentQuestionIndex] = false;
       }
 
     } else if (currentQuestionIndex === 2) {
 
-      setQuestion3Answer(e.target.value);
+      setQuestion3Answer(stringAns);
 
-      if (!question3Answered && question3Answer.length === 3) {
+      if (!question3Answered && stringAns.length === 3) {
         setPosition(position + 57);
         setQuestion3Answered(true);
-      } else if (question3Answered && question3Answer.length < 3){
+        answeredArr[currentQuestionIndex] = true;
+      } else if (question3Answered && stringAns.length < 3){
         setPosition(position - 57);
         setQuestion3Answered(false);
+        answeredArr[currentQuestionIndex] = false;
       }
 
     } else if (currentQuestionIndex === 3) {
 
-      setQuestion4Answer(e.target.value);
+      setQuestion4Answer(stringAns);
 
-      if (!question4Answered && question4Answer.length === 3) {
+      if (!question4Answered && stringAns.length === 3) {
         setPosition(position + 57);
         setQuestion4Answered(true);
-      } else if (question4Answered && question4Answer.length < 3){
+        answeredArr[currentQuestionIndex] = true;
+      } else if (question4Answered && stringAns.length < 3){
         setPosition(position - 57);
         setQuestion4Answered(false);
+        answeredArr[currentQuestionIndex] = false;
       }
 
     } else if (currentQuestionIndex === 4) {
 
-      setQuestion5Answer(e.target.value);
+      setQuestion5Answer(stringAns);
 
-      if (!question5Answered && question5Answer.length === 3) {
+      if (!question5Answered && stringAns.length === 3) {
         setPosition(position + 57);
         setQuestion5Answered(true);
-      } else if (question5Answered && question5Answer.length < 3){
+        answeredArr[currentQuestionIndex] = true;
+      } else if (question5Answered && stringAns.length < 3){
         setPosition(position - 57);
         setQuestion5Answered(false);
+        answeredArr[currentQuestionIndex] = false;
       }
 
     } else if (currentQuestionIndex === 5) {
 
-      setQuestion6Answer(e.target.value);
+      setQuestion6Answer(stringAns);
 
-      if (!question6Answered && question6Answer.length === 3) {
+      if (!question6Answered && stringAns.length === 3) {
         setPosition(position + 57);
         setQuestion6Answered(true);
-      } else if (question6Answered && question6Answer.length < 3){
+        answeredArr[currentQuestionIndex] = true;
+      } else if (question6Answered && stringAns.length < 3){
         setPosition(position - 57);
         setQuestion6Answered(false);
+        answeredArr[currentQuestionIndex] = false;
       }
 
     } else if (currentQuestionIndex === 6) {
 
-      setQuestion7Answer(e.target.value);
+      setQuestion7Answer(stringAns);
 
-      if (!question7Answered && question7Answer.length === 3) {
+      if (!question7Answered && stringAns.length === 3) {
         setPosition(position + 57);
         setQuestion7Answered(true);
-      } else if (question7Answered && question7Answer.length < 3){
+        answeredArr[currentQuestionIndex] = true;
+      } else if (question7Answered && stringAns.length < 3){
         setPosition(position - 57);
         setQuestion7Answered(false);
+        answeredArr[currentQuestionIndex] = false;
       }
 
     }
 
-    notifyIfDone();
+    notifyIfDone(answeredArr);
 
   };
+
+  const notifyIfDone = (answeredArr: boolean[]) => {
+    if(answeredArr[0] &&
+      answeredArr[1] &&
+      answeredArr[2] &&
+      answeredArr[3] &&
+      answeredArr[4] &&
+      answeredArr[5] &&
+      answeredArr[6] ) {
+        setNotify(true);
+    } else {
+      setNotify(false);
+    }
+  }
 
   const nextQuestion = () => {
     if (currentQuestionIndex < 7) {
@@ -326,14 +367,26 @@ export function DetailedQuizPage(): React.JSX.Element {
           <Button onClick={getCareerRecommendation} disabled={loadingRecommendation}>
           {loadingRecommendation ? 'Generating...' : 'Get Career Recommendation'}
           </Button>
-          {careerRecommendation && (
-          <div style={{ marginTop: '1rem', background: '#f8f9fa', padding: '10px', borderRadius: '5px' }}>
-          <strong>Career Recommendation:</strong>
-          <p>{careerRecommendation}</p>
+          {careerRecommendation.length > 0 && (
+          <div className="career-wrapper">
+          <p className="career-title">Your Suggested Careers: </p>
+          {careerRecommendation.map((career, index) => (
+            <div className="career-card" key={index}>
+              <h3>💼 {career.title}</h3>
+              <p><strong>💰 Salary: </strong> {career.salary}</p>
+              <p><strong>🎯 Match:</strong> {career.match}</p>
+              <p>{career.summary}</p>
+              </div>
+          ))}
+          
           </div>
           )}
 
           </div>
+          )}
+
+          {errorGenerating && (
+            <div>There was an error generating your career recommendation. Please give more descriptive answers and try again🙂</div>
           )}
 
 

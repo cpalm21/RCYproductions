@@ -13,3 +13,43 @@
     width: 100%;
     text-align: left; /* Ensure the text in the input field is aligned to the left */
   }
+
+  .career-wrapper {
+    margin-top: 2rem;
+    width: 100%;
+    text-align: center;
+  }
+
+
+  .career-title {
+    font-size: 20px;
+    font-weight: bold;
+    color: #2C3E50;
+    margin-bottom: 0.5rem;
+  }
+
+  .career-card {
+    background-color: #D6E4F0;
+    padding: 25px;
+    margin: 0 auto 20px auto; 
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    color: #2C3E50;
+    width: 100%;
+    max-width: 900px;
+    text-align: left;
+  }
+  
+  .career-card h3 {
+    color: #000000;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .career-wrapper {
+    margin-top: 2rem;
+    width: 100%;
+    padding: 0 20px;
+    box-sizing: border-box;
+  }
