@@ -10,6 +10,7 @@
   }
   
   .answer-input {
-    width: 100%;
-    text-align: left; /* Ensure the text in the input field is aligned to the left */
+    justify-self: center;
+    width: 75%;
+    /*text-align: left;*/ /* Ensure the text in the input field is aligned to the left */
   }
