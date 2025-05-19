@@ -42,19 +42,22 @@ Progress:   #A8D5BA
 
 /* Question input */
 .question-input {
-  margin-bottom: 10px;
-  margin-left: 10px;
-  width: 100%;
-  background-color: #F9FAFB;
+  /*margin-bottom: 10px;
+  margin-left: 10px;*/
+  font-size: large;
+  width: 50%;
+  background-color: #edecec;
   color: #2C3E50;
   border: 1px solid #3F72AF;
-  border-radius: 5px;
+  border-radius: 50px;
   box-shadow: none;
 }
 
 /* Answer options */
 .answer-option {
   display: flex;
+  justify-content: space-evenly;
+  /*margin-left: 30%;*/
   align-items: center;
   margin-bottom: 10px;
 }

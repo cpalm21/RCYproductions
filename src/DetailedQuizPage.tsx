@@ -38,6 +38,8 @@ export function DetailedQuizPage(): React.JSX.Element {
   // Flag for whether to display finished notification
   const [notify, setNotify] = useState<boolean>(false);
 
+  const indexes: number[] = [0,1,2,3,4,5,6];
+
     const prompt: string = `Based on the following responses, suggest the top 3 best-fit careers. Return the response as a JSON array of objects with fields: title, salary, match: (percentage), summary: make it detailed and around 5-6 sentences.
 
 1. ${question1Answer}
@@ -66,11 +68,11 @@ export function DetailedQuizPage(): React.JSX.Element {
 
       setQuestion1Answer(stringAns);
 
-      if (!question1Answered && stringAns.length >= 3) {
+      if (!question1Answered && stringAns.length >= 25) {
         setPosition(position + 57);
         setQuestion1Answered(true);
         answeredArr[currentQuestionIndex] = true;
-      } else if (question1Answered && stringAns.length < 3){
+      } else if (question1Answered && stringAns.length < 25){
         setPosition(position - 57);
         setQuestion1Answered(false);
         answeredArr[currentQuestionIndex] = false;
@@ -80,11 +82,11 @@ export function DetailedQuizPage(): React.JSX.Element {
 
       setQuestion2Answer(stringAns);
 
-      if (!question2Answered && stringAns.length >= 3) {
+      if (!question2Answered && stringAns.length >= 25) {
         setPosition(position + 57);
         setQuestion2Answered(true);
         answeredArr[currentQuestionIndex] = true;
-      } else if (question2Answered && stringAns.length < 3){
+      } else if (question2Answered && stringAns.length < 25){
         setPosition(position - 57);
         setQuestion2Answered(false);
         answeredArr[currentQuestionIndex] = false;
@@ -94,11 +96,11 @@ export function DetailedQuizPage(): React.JSX.Element {
 
       setQuestion3Answer(stringAns);
 
-      if (!question3Answered && stringAns.length >= 3) {
+      if (!question3Answered && stringAns.length >= 25) {
         setPosition(position + 57);
         setQuestion3Answered(true);
         answeredArr[currentQuestionIndex] = true;
-      } else if (question3Answered && stringAns.length < 3){
+      } else if (question3Answered && stringAns.length < 25){
         setPosition(position - 57);
         setQuestion3Answered(false);
         answeredArr[currentQuestionIndex] = false;
@@ -108,11 +110,11 @@ export function DetailedQuizPage(): React.JSX.Element {
 
       setQuestion4Answer(stringAns);
 
-      if (!question4Answered && stringAns.length >= 3) {
+      if (!question4Answered && stringAns.length >= 25) {
         setPosition(position + 57);
         setQuestion4Answered(true);
         answeredArr[currentQuestionIndex] = true;
-      } else if (question4Answered && stringAns.length < 3){
+      } else if (question4Answered && stringAns.length < 25){
         setPosition(position - 57);
         setQuestion4Answered(false);
         answeredArr[currentQuestionIndex] = false;
@@ -122,11 +124,11 @@ export function DetailedQuizPage(): React.JSX.Element {
 
       setQuestion5Answer(stringAns);
 
-      if (!question5Answered && stringAns.length >= 3) {
+      if (!question5Answered && stringAns.length >= 25) {
         setPosition(position + 57);
         setQuestion5Answered(true);
         answeredArr[currentQuestionIndex] = true;
-      } else if (question5Answered && stringAns.length < 3){
+      } else if (question5Answered && stringAns.length < 25){
         setPosition(position - 57);
         setQuestion5Answered(false);
         answeredArr[currentQuestionIndex] = false;
@@ -136,11 +138,11 @@ export function DetailedQuizPage(): React.JSX.Element {
 
       setQuestion6Answer(stringAns);
 
-      if (!question6Answered && stringAns.length >= 3) {
+      if (!question6Answered && stringAns.length >= 25) {
         setPosition(position + 57);
         setQuestion6Answered(true);
         answeredArr[currentQuestionIndex] = true;
-      } else if (question6Answered && stringAns.length < 3){
+      } else if (question6Answered && stringAns.length < 25){
         setPosition(position - 57);
         setQuestion6Answered(false);
         answeredArr[currentQuestionIndex] = false;
@@ -150,11 +152,11 @@ export function DetailedQuizPage(): React.JSX.Element {
 
       setQuestion7Answer(stringAns);
 
-      if (!question7Answered && stringAns.length >= 3) {
+      if (!question7Answered && stringAns.length >= 25) {
         setPosition(position + 57);
         setQuestion7Answered(true);
         answeredArr[currentQuestionIndex] = true;
-      } else if (question7Answered && stringAns.length < 3){
+      } else if (question7Answered && stringAns.length < 25){
         setPosition(position - 57);
         setQuestion7Answered(false);
         answeredArr[currentQuestionIndex] = false;
@@ -167,18 +169,14 @@ export function DetailedQuizPage(): React.JSX.Element {
   };
 
   const notifyIfDone = (answeredArr: boolean[]) => {
-    if(answeredArr[0] &&
-      answeredArr[1] &&
-      answeredArr[2] &&
-      answeredArr[3] &&
-      answeredArr[4] &&
-      answeredArr[5] &&
-      answeredArr[6] ) {
+    if(answeredArr.every((ans: boolean) => ans) ) {
         setNotify(true);
     } else {
       setNotify(false);
     }
   }
+
+  const goToQuestion = (ind: number) => setCurrentQuestionIndex(ind);
 
   const nextQuestion = () => {
     if (currentQuestionIndex < 7) {
@@ -258,17 +256,19 @@ export function DetailedQuizPage(): React.JSX.Element {
 
       {/* Quiz Content */}
       <div className="quiz-container">
-        <h4 className="question-label">Question:</h4>
-        <Form.Control
+        <h4 className="question-label">Question {currentQuestionIndex+1}:</h4>
+        {/* <Form.Control
           type="text"
           value={question}
           readOnly
           className="question-input"
-        />
+        /> */}
+
+        <Form.Label className='question-input'>{question}</Form.Label>
 
         <h4 className="answer-label">Your Answer:</h4>
-        <Form.Label>Please input at least 3 characters.</Form.Label>
-        <Form.Control
+        <Form.Label>Please input at least 25 characters. Detailed answers will get you more accurate results.</Form.Label>
+        <Form.Control as={'textarea'}
           type="text"
           value={answer}
           onChange={handleAnswerChange}
@@ -276,6 +276,12 @@ export function DetailedQuizPage(): React.JSX.Element {
         />
 
         {notify && <Form.Label>You've completed all the questions for the Detailed Assessment! ✔️</Form.Label>}
+
+        <div style={{display: "flex", justifyContent: "center", gap: "2px"}}>
+          {indexes.map((ind: number) =>
+            <Button onClick={() => goToQuestion(ind)} key={ind} value={ind}>{ind + 1}</Button>
+          )}
+        </div>
 
         <div className="navigation">
           <Button onClick={prevQuestion} disabled={currentQuestionIndex === 0}>
