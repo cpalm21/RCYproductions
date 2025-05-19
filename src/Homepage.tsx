@@ -16,7 +16,7 @@ export function Homepage(): React.JSX.Element {
       <Navbar className="top-navbar">
         <Nav.Item className="user-greeting">RCY Productions</Nav.Item>
         <Nav>
-          <Nav.Item className="user-greeting">Hey, User!</Nav.Item>
+          <Nav.Item className="user-greeting">Explore Your Possibilities.</Nav.Item>
         </Nav>
       </Navbar>
       <div className="hero-banner">

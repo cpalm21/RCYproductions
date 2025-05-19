@@ -60,7 +60,7 @@ export function CareerResults({chatPrompt, tokens}: ChatPromptProps): React.JSX.
         }
         } catch (error) {
             console.error('Failed to fetch recommendation:', error);
-            //setErrorGenerating(true);
+            setErrorGenerating(true);
         } finally {
             setLoadingRecommendation(false);
         }
@@ -91,7 +91,7 @@ export function CareerResults({chatPrompt, tokens}: ChatPromptProps): React.JSX.
             </div>
 
             {errorGenerating && (
-                <div>There was an error generating your career recommendation. If you're on the detailed quiz, please check your answers and try again. 🙂</div>
+                <div>There was an error generating your career recommendation. Make sure you have your API Key submitted. If you're on the detailed quiz, please check your answers clarity. 🙂</div>
             )}
 
             {/*end chatGPT button*/}
