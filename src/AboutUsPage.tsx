@@ -48,7 +48,7 @@ export function AboutPage(): React.JSX.Element {
   <img src="https://images.icon-icons.com/3054/PNG/512/account_profile_user_icon_190494.png" alt="User Icon" className="user-icon" />
               <h2 className="card-title">Ray Spencer</h2>
               <p className="card-text">
-                I'm currently majoring in Physics with a concentration in Astronomy, and minoring in Computer Science. I work at the University of Delaware as a teaching assistant in the Computer Science department, and a supporting instructor in the Computer Engineering department.
+                Hey! My name is Ray, and I'm majoring in Physics with a concentration in Astronomy, and minoring in Computer Science. I have a passion for teaching STEM topics; I'm currently a teaching assistant in CISC181 and a supporting instructor in CPEG202.
               </p>
               
             
