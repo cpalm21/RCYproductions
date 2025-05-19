@@ -26,6 +26,7 @@ export function BasicQuizPage(): React.JSX.Element {
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [notify, setNotify] = useState<boolean>(false);
   const [answered, setAnswered] = useState<boolean[]>(Array(10).fill(false));
+  const indexes: number[] = [0,1,2,3,4,5,6,7,8,9];
 
     const prompt: string = `Based on the following responses, suggest the top 3 best-fit careers. Return the response as a JSON array of objects with fields: title, salary, summary, and match (percentage).
 
@@ -59,9 +60,10 @@ export function BasicQuizPage(): React.JSX.Element {
   };
 
   const notifyIfDone = (arr: boolean[]) => {
-    if (arr.every((v) => v)) setNotify(true);
+    if (arr.every((v: boolean) => v)) setNotify(true);
   };
 
+  const goToQuestion = (ind: number) => setCurrentQuestionIndex(ind);
   const nextQuestion = () => { if (currentQuestionIndex < 9) setCurrentQuestionIndex(currentQuestionIndex + 1); };
   const prevQuestion = () => { if (currentQuestionIndex > 0) setCurrentQuestionIndex(currentQuestionIndex - 1); };
 
@@ -165,9 +167,11 @@ export function BasicQuizPage(): React.JSX.Element {
         </div>
       </header>
       <div className="quiz-container">
-        <h4 className="question-label">Question:</h4>
-        <Form.Control type="text" value={question} readOnly className="question-input" />
+        <h4 className="question-label">Question {currentQuestionIndex+1}:</h4>
+
+        <Form.Label className='question-input'>{question}</Form.Label>
         <h4 className="answers-label">Answers:</h4>
+
         {answers.map((answer, index) => (
           <div key={index} className="answer-option">
             <Form.Check
@@ -182,11 +186,20 @@ export function BasicQuizPage(): React.JSX.Element {
         ))}
 
         {notify && <Form.Label>You've completed all the questions for the Basic Assessment! ✔️</Form.Label>}
+
+        <div style={{display: "flex", justifyContent: "center", gap: "2px"}}>
+          {indexes.map((ind: number) =>
+            <Button onClick={() => goToQuestion(ind)} key={ind} value={ind}>{ind + 1}</Button>
+          )}
+        </div>
+
         <div className="navigation">
           <Button onClick={prevQuestion} disabled={currentQuestionIndex === 0}>Previous Question</Button>
           {currentQuestionIndex < 9 && <Button onClick={nextQuestion}>Next Question</Button>}
         </div>
+
         {notify && (<CareerResults chatPrompt={prompt} tokens={500}></CareerResults>)}
+
         <div className="progress-row">
           <span className="progress-label">Progress:</span>
           <div className="moveable-box-container">
